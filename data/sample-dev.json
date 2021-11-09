@@ -1,0 +1,402 @@
+{
+    "vertexSet": [
+        [
+            {
+                "pos": [
+                    0,
+                    2
+                ],
+                "type": "ORG",
+                "sent_id": 4,
+                "name": "Skai TV"
+            },
+            {
+                "pos": [
+                    0,
+                    2
+                ],
+                "type": "ORG",
+                "sent_id": 0,
+                "name": "Skai TV"
+            },
+            {
+                "pos": [
+                    3,
+                    5
+                ],
+                "type": "ORG",
+                "sent_id": 5,
+                "name": "Skai TV"
+            }
+        ],
+        [
+            {
+                "name": "Greek",
+                "pos": [
+                    4,
+                    5
+                ],
+                "sent_id": 0,
+                "type": "LOC"
+            }
+        ],
+        [
+            {
+                "name": "Piraeus",
+                "pos": [
+                    14,
+                    15
+                ],
+                "sent_id": 0,
+                "type": "LOC"
+            }
+        ],
+        [
+            {
+                "name": "Skai Group",
+                "pos": [
+                    5,
+                    7
+                ],
+                "sent_id": 1,
+                "type": "ORG"
+            }
+        ],
+        [
+            {
+                "pos": [
+                    8,
+                    12
+                ],
+                "type": "TIME",
+                "sent_id": 2,
+                "name": "1st of April 2006"
+            }
+        ],
+        [
+            {
+                "name": "Athens",
+                "pos": [
+                    14,
+                    15
+                ],
+                "sent_id": 2,
+                "type": "LOC"
+            }
+        ],
+        [
+            {
+                "name": "Nova",
+                "pos": [
+                    16,
+                    17
+                ],
+                "sent_id": 3,
+                "type": "ORG"
+            }
+        ],
+        [
+            {
+                "pos": [
+                    18,
+                    20
+                ],
+                "type": "ORG",
+                "sent_id": 3,
+                "name": "Cosmote TV"
+            }
+        ],
+        [
+            {
+                "pos": [
+                    7,
+                    8
+                ],
+                "type": "ORG",
+                "sent_id": 4,
+                "name": "Digea"
+            }
+        ],
+        [
+            {
+                "name": "Greece",
+                "pos": [
+                    20,
+                    21
+                ],
+                "sent_id": 4,
+                "type": "LOC"
+            },
+            {
+                "name": "Greece",
+                "pos": [
+                    5,
+                    6
+                ],
+                "sent_id": 6,
+                "type": "LOC"
+            }
+        ],
+        [
+            {
+                "sent_id": 5,
+                "type": "MISC",
+                "pos": [
+                    13,
+                    14
+                ],
+                "name": "Greek"
+            }
+        ]
+    ],
+    "labels": [
+        {
+            "r": "P17",
+            "h": 2,
+            "t": 9,
+            "evidence": [
+                0,
+                4
+            ]
+        },
+        {
+            "r": "P17",
+            "h": 3,
+            "t": 9,
+            "evidence": [
+                0,
+                1,
+                4
+            ]
+        },
+        {
+            "r": "P17",
+            "h": 5,
+            "t": 9,
+            "evidence": [
+                0,
+                2,
+                4
+            ]
+        },
+        {
+            "r": "P159",
+            "h": 0,
+            "t": 2,
+            "evidence": [
+                0
+            ]
+        },
+        {
+            "r": "P127",
+            "h": 0,
+            "t": 3,
+            "evidence": [
+                0,
+                1
+            ]
+        },
+        {
+            "r": "P159",
+            "h": 0,
+            "t": 5,
+            "evidence": [
+                0,
+                2
+            ]
+        },
+        {
+            "r": "P17",
+            "h": 0,
+            "t": 9,
+            "evidence": [
+                0,
+                4,
+                5,
+                6
+            ]
+        }
+    ],
+    "title": "Skai TV",
+    "sents": [
+        [
+            "Skai",
+            "TV",
+            "is",
+            "a",
+            "Greek",
+            "free",
+            "-",
+            "to",
+            "-",
+            "air",
+            "television",
+            "network",
+            "based",
+            "in",
+            "Piraeus",
+            "."
+        ],
+        [
+            "It",
+            "is",
+            "part",
+            "of",
+            "the",
+            "Skai",
+            "Group",
+            ",",
+            "one",
+            "of",
+            "the",
+            "largest",
+            "media",
+            "groups",
+            "in",
+            "the",
+            "country",
+            "."
+        ],
+        [
+            "It",
+            "was",
+            "relaunched",
+            "in",
+            "its",
+            "present",
+            "form",
+            "on",
+            "1st",
+            "of",
+            "April",
+            "2006",
+            "in",
+            "the",
+            "Athens",
+            "metropolitan",
+            "area",
+            ",",
+            "and",
+            "gradually",
+            "spread",
+            "its",
+            "coverage",
+            "nationwide",
+            "."
+        ],
+        [
+            "Besides",
+            "digital",
+            "terrestrial",
+            "transmission",
+            ",",
+            "it",
+            "is",
+            "available",
+            "on",
+            "the",
+            "subscription",
+            "-",
+            "based",
+            "encrypted",
+            "services",
+            "of",
+            "Nova",
+            "and",
+            "Cosmote",
+            "TV",
+            "."
+        ],
+        [
+            "Skai",
+            "TV",
+            "is",
+            "also",
+            "a",
+            "member",
+            "of",
+            "Digea",
+            ",",
+            "a",
+            "consortium",
+            "of",
+            "private",
+            "television",
+            "networks",
+            "introducing",
+            "digital",
+            "terrestrial",
+            "transmission",
+            "in",
+            "Greece",
+            "."
+        ],
+        [
+            "At",
+            "launch",
+            ",",
+            "Skai",
+            "TV",
+            "opted",
+            "for",
+            "dubbing",
+            "all",
+            "foreign",
+            "language",
+            "content",
+            "into",
+            "Greek",
+            ",",
+            "instead",
+            "of",
+            "using",
+            "subtitles",
+            "."
+        ],
+        [
+            "This",
+            "is",
+            "very",
+            "uncommon",
+            "in",
+            "Greece",
+            "for",
+            "anything",
+            "except",
+            "documentaries",
+            "(",
+            "using",
+            "voiceover",
+            "dubbing",
+            ")",
+            "and",
+            "children",
+            "'s",
+            "programmes",
+            "(",
+            "using",
+            "lip",
+            "-",
+            "synced",
+            "dubbing",
+            ")",
+            ",",
+            "so",
+            "after",
+            "intense",
+            "criticism",
+            "the",
+            "station",
+            "switched",
+            "to",
+            "using",
+            "subtitles",
+            "for",
+            "almost",
+            "all",
+            "foreign",
+            "shows",
+            "."
+        ]
+    ]
+}

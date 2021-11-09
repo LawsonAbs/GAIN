@@ -1,0 +1,1561 @@
+[{
+        "golden": false,
+        "title": "Washington Place (West Virginia)",
+        "h_idx": 17,
+        "t_idx": 5,
+        "head_entity": "Blacks Hill",
+        "tail_entity": "United States",
+        "r": "P17",
+        "r_name": "country"
+    },    # 忽略了实体类型信息
+    {
+        "golden": false,
+        "title": "Allen F. Moore",
+        "h_idx": 23,
+        "t_idx": 3,
+        "head_entity": "Sixty - ninth Congress",
+        "tail_entity": "U.S.",
+        "r": "P17",
+        "r_name": "country"
+    },    # 忽略了类型实体类型信息
+    {
+        "golden": false,
+        "title": "Quokka",
+        "h_idx": 5,
+        "t_idx": 0,
+        "head_entity": "Peoples Bay Nature Reserve",
+        "tail_entity": "Western Australia",
+        "r": "P131",
+        "r_name": "located in the administrative territorial entity"
+    }, # 这个感觉是正确的预测，但可能是因为标注数据集中不存在就为false了
+    # 或者是因为责怪 "located in the administrative territorial entity" 与 location 可能存在一点儿区分
+    {
+        "golden": false,
+        "title": "Julian Reinard",
+        "h_idx": 0,
+        "t_idx": 5,
+        "head_entity": "Julian Reinard",
+        "tail_entity": "SC Freiburg",
+        "r": "P54",
+        "r_name": "member of sports team"
+    }, # 这是正确的，DocRED 存在漏标
+    {
+        "golden": false,
+        "title": "(I Am) The Seeker",
+        "h_idx": 0,
+        "t_idx": 1,
+        "head_entity": "The Seeker",
+        "tail_entity": "ABBA",
+        "r": "P175",
+        "r_name": "performer"
+    },# 分类错误 
+    {
+        "golden": false,
+        "title": "Old Loggers Path",
+        "h_idx": 10,
+        "t_idx": 3,
+        "head_entity": "Civilian Conservation Corps",
+        "tail_entity": "the United States",
+        "r": "P17",
+        "r_name": "country"
+    }, # 搞不懂country 这种关系怎么搞的？
+    {
+        "golden": false,
+        "title": "Low Pass, Oregon",
+        "h_idx": 2,
+        "t_idx": 3,
+        "head_entity": "Oregon",
+        "tail_entity": "United States",
+        "r": "P17",
+        "r_name": "country"
+    }, # 这个也是正确的，应该是DocRED 漏标了
+    {
+        "golden": false,
+        "title": "Low Pass, Oregon",
+        "h_idx": 2,
+        "t_idx": 3,
+        "head_entity": "Oregon",
+        "tail_entity": "United States",
+        "r": "P131",
+        "r_name": "located in the administrative territorial entity"
+    },
+    {
+        "golden": false,
+        "title": "Low Pass, Oregon",
+        "h_idx": 9,
+        "t_idx": 3,
+        "head_entity": "Coast Range",
+        "tail_entity": "United States",
+        "r": "P17",
+        "r_name": "country"
+    }, # 忽略类型导致匹配错误
+    {
+        "golden": false,
+        "title": "Portland Golf Club",
+        "h_idx": 10,
+        "t_idx": 1,
+        "head_entity": "Seattle Railway",
+        "tail_entity": "United States",
+        "r": "P17",
+        "r_name": "country"
+    },# 忽略类型导致匹配错误
+    {
+        "golden": false,
+        "title": "Low Pass, Oregon",
+        "h_idx": 5,
+        "t_idx": 3,
+        "head_entity": "Blachly",
+        "tail_entity": "United States",
+        "r": "P17",
+        "r_name": "country"
+    },# 正确，DocRED 漏标了
+    {
+        "golden": false,
+        "title": "Low Pass, Oregon",
+        "h_idx": 8,
+        "t_idx": 2,
+        "head_entity": "Low Pass Transfer Station",
+        "tail_entity": "Oregon",
+        "r": "P131",
+        "r_name": "located in the administrative territorial entity"
+    },# 也应该是对的，但是DocRED 漏标了
+    {
+        "golden": false,
+        "title": "Old Loggers Path",
+        "h_idx": 8,
+        "t_idx": 3,
+        "head_entity": "Central Pennsylvania Lumber Company",
+        "tail_entity": "the United States",
+        "r": "P17",
+        "r_name": "country"
+    },# 判断不好~ 
+    {
+        "golden": false,
+        "title": "Beibu Gulf Economic Rim",
+        "h_idx": 6,
+        "t_idx": 2,
+        "head_entity": "Beibu Gulf Rim",
+        "tail_entity": "Chinese",
+        "r": "P17",
+        "r_name": "country"
+    },# 这应该是正确的，但是DocRED 漏标了
+    {
+        "golden": false,
+        "title": "Urgut",
+        "h_idx": 10,
+        "t_idx": 2,
+        "head_entity": "Urguti",
+        "tail_entity": "Uzbekistan",
+        "r": "P17",
+        "r_name": "country"
+    },# 正确的，DocRED漏标
+    {
+        "golden": false,
+        "title": "Paul Morphy",
+        "h_idx": 8,
+        "t_idx": 3,
+        "head_entity": "New Orleans",
+        "tail_entity": "American",
+        "r": "P17",
+        "r_name": "country"
+    },# 正确的，DocRED漏标
+    {
+        "golden": false,
+        "title": "Dollar General",
+        "h_idx": 0,
+        "t_idx": 1,
+        "head_entity": "Dollar General Corporation",
+        "tail_entity": "American",
+        "r": "P17",
+        "r_name": "country"
+    },
+    {
+        "golden": false,
+        "title": "Allen County, Ohio",
+        "h_idx": 13,
+        "t_idx": 1,
+        "head_entity": "General Assembly",
+        "tail_entity": "U.S.",
+        "r": "P17",
+        "r_name": "country"
+    }, # 实体类型错误导致分类错误
+    {
+        "golden": false,
+        "title": "Siberia Governorate",
+        "h_idx": 1,
+        "t_idx": 12,
+        "head_entity": "Russia",
+        "tail_entity": "Siberia",
+        "r": "P150",
+        "r_name": "contains administrative territorial entity"
+    },
+    {
+        "golden": false,
+        "title": "Portland Golf Club",
+        "h_idx": 13,
+        "t_idx": 1,
+        "head_entity": "Ben Hogan",
+        "tail_entity": "United States",
+        "r": "P27",
+        "r_name": "country of citizenship"
+    },
+    {
+        "golden": false,
+        "title": "Ned McEvoy",
+        "h_idx": 0,
+        "t_idx": 14,
+        "head_entity": "Edward P. \"Ned\" McEvoy",
+        "tail_entity": "Thomas Davis club",
+        "r": "P54",
+        "r_name": "member of sports team"
+    },#正确，DocRED
+    {
+        "golden": false,
+        "title": "Low Pass, Oregon",
+        "h_idx": 10,
+        "t_idx": 3,
+        "head_entity": "High Pass",
+        "tail_entity": "United States",
+        "r": "P17",
+        "r_name": "country"
+    }, # 类型错误
+    {
+        "golden": false,
+        "title": "Portland Golf Club",
+        "h_idx": 4,
+        "t_idx": 3,
+        "head_entity": "Raleigh Hills",
+        "tail_entity": "Oregon",
+        "r": "P131",
+        "r_name": "located in the administrative territorial entity"
+    }, # 无法判断
+    {
+        "golden": false,
+        "title": "Skai TV",
+        "h_idx": 2,
+        "t_idx": 1,
+        "head_entity": "Piraeus",
+        "tail_entity": "Greek",
+        "r": "P17",
+        "r_name": "country"
+    },# 正确，DocRED漏标 
+    {
+        "golden": false,
+        "title": "Low Pass, Oregon",
+        "h_idx": 12,
+        "t_idx": 3,
+        "head_entity": "Long Tom Station",
+        "tail_entity": "United States",
+        "r": "P17",
+        "r_name": "country"
+    },
+    {
+        "golden": false,
+        "title": "Norvelt, Pennsylvania",
+        "h_idx": 0,
+        "t_idx": 2,
+        "head_entity": "Norvelt",
+        "tail_entity": "Westmoreland County",
+        "r": "P131",
+        "r_name": "located in the administrative territorial entity"
+    },
+    {
+        "golden": false,
+        "title": "Old Loggers Path",
+        "h_idx": 9,
+        "t_idx": 1,
+        "head_entity": "Masten",
+        "tail_entity": "Lycoming County",
+        "r": "P131",
+        "r_name": "located in the administrative territorial entity"
+    },
+    {
+        "golden": false,
+        "title": "Low Pass, Oregon",
+        "h_idx": 0,
+        "t_idx": 1,
+        "head_entity": "Low Pass",
+        "tail_entity": "Lane County",
+        "r": "P131",
+        "r_name": "located in the administrative territorial entity"
+    },
+    {
+        "golden": false,
+        "title": "Siberia Governorate",
+        "h_idx": 12,
+        "t_idx": 1,
+        "head_entity": "Siberia",
+        "tail_entity": "Russia",
+        "r": "P131",
+        "r_name": "located in the administrative territorial entity"
+    },
+    {
+        "golden": false,
+        "title": "Urgut",
+        "h_idx": 0,
+        "t_idx": 1,
+        "head_entity": "Urgut",
+        "tail_entity": "Samarqand Region",
+        "r": "P131",
+        "r_name": "located in the administrative territorial entity"
+    },
+    {
+        "golden": false,
+        "title": "Lookin Ass",
+        "h_idx": 0,
+        "t_idx": 5,
+        "head_entity": "Lookin Ass",
+        "tail_entity": "Young Money Entertainment",
+        "r": "P361",
+        "r_name": "part of"
+    },
+    {
+        "golden": false,
+        "title": "Skai TV",
+        "h_idx": 0,
+        "t_idx": 4,
+        "head_entity": "Skai TV",
+        "tail_entity": "1st of April 2006",
+        "r": "P571",
+        "r_name": "inception"
+    },
+    {
+        "golden": false,
+        "title": "Low Pass, Oregon",
+        "h_idx": 4,
+        "t_idx": 3,
+        "head_entity": "Long Tom River",
+        "tail_entity": "United States",
+        "r": "P17",
+        "r_name": "country"
+    },
+    {
+        "golden": false,
+        "title": "(I Am) The Seeker",
+        "h_idx": 14,
+        "t_idx": 1,
+        "head_entity": "Time",
+        "tail_entity": "ABBA",
+        "r": "P175",
+        "r_name": "performer"
+    },
+    {
+        "golden": false,
+        "title": "Siberia Governorate",
+        "h_idx": 12,
+        "t_idx": 1,
+        "head_entity": "Siberia",
+        "tail_entity": "Russia",
+        "r": "P17",
+        "r_name": "country"
+    },
+    {
+        "golden": false,
+        "title": "Conrad O. Johnson",
+        "h_idx": 0,
+        "t_idx": 13,
+        "head_entity": "Conrad Oberon Johnson",
+        "tail_entity": "Omega Psi Phi Fraternity",
+        "r": "P463",
+        "r_name": "member of"
+    },
+    {
+        "golden": false,
+        "title": "Siberia Governorate",
+        "h_idx": 8,
+        "t_idx": 1,
+        "head_entity": "Archangelgorod Governorate",
+        "tail_entity": "Russia",
+        "r": "P17",
+        "r_name": "country"
+    },
+    {
+        "golden": false,
+        "title": "The Yorkshire Post",
+        "h_idx": 9,
+        "t_idx": 3,
+        "head_entity": "United Kingdom",
+        "tail_entity": "Yorkshire",
+        "r": "P150",
+        "r_name": "contains administrative territorial entity"
+    },
+    {
+        "golden": false,
+        "title": "Memogate (Pakistan)",
+        "h_idx": 12,
+        "t_idx": 4,
+        "head_entity": "Mansoor Ijaz",
+        "tail_entity": "Pakistani",
+        "r": "P27",
+        "r_name": "country of citizenship"
+    },
+    {
+        "golden": false,
+        "title": "Skai TV",
+        "h_idx": 0,
+        "t_idx": 1,
+        "head_entity": "Skai TV",
+        "tail_entity": "Greek",
+        "r": "P17",
+        "r_name": "country"
+    },
+    {
+        "golden": false,
+        "title": "Portland Golf Club",
+        "h_idx": 9,
+        "t_idx": 1,
+        "head_entity": "Spokane",
+        "tail_entity": "United States",
+        "r": "P17",
+        "r_name": "country"
+    },
+    {
+        "golden": false,
+        "title": "Robert K. Huntington",
+        "h_idx": 6,
+        "t_idx": 15,
+        "head_entity": "Battle of Midway",
+        "tail_entity": "Japanese",
+        "r": "P710",
+        "r_name": "participant"
+    },#正确，DocRED
+    {
+        "golden": false,
+        "title": "Villanova Preparatory School",
+        "h_idx": 2,
+        "t_idx": 17,
+        "head_entity": "the United States",
+        "tail_entity": "North America",
+        "r": "P30",
+        "r_name": "continent"
+    },#正确，DocRED
+    {
+        "golden": false,
+        "title": "More (The Sisters of Mercy song)",
+        "h_idx": 11,
+        "t_idx": 1,
+        "head_entity": "The Dark Side",
+        "tail_entity": "Sisters of Mercy",
+        "r": "P175",
+        "r_name": "performer"
+    },
+    {
+        "golden": false,
+        "title": "Allen County, Ohio",
+        "h_idx": 8,
+        "t_idx": 10,
+        "head_entity": "John Allen",
+        "tail_entity": "War of 1812",
+        "r": "P607",
+        "r_name": "conflict"
+    },# 实体类型搞错了，导致产生错误 
+    {
+        "golden": false,
+        "title": "Memogate (Pakistan)",
+        "h_idx": 15,
+        "t_idx": 4,
+        "head_entity": "James L. Jones",
+        "tail_entity": "Pakistani",
+        "r": "P27",
+        "r_name": "country of citizenship"
+    },
+    {
+        "golden": false,
+        "title": "Kurt Tucholsky",
+        "h_idx": 0,
+        "t_idx": 11,
+        "head_entity": "Kurt Tucholsky",
+        "tail_entity": "Weimar Republic",
+        "r": "P27",
+        "r_name": "country of citizenship"
+    },
+    {
+        "golden": false,
+        "title": "Portland Golf Club",
+        "h_idx": 2,
+        "t_idx": 5,
+        "head_entity": "Portland",
+        "tail_entity": "Washington County",
+        "r": "P131",
+        "r_name": "located in the administrative territorial entity"
+    },
+    {
+        "golden": false,
+        "title": "America's Sweetheart (album)",
+        "h_idx": 14,
+        "t_idx": 23,
+        "head_entity": "California",
+        "tail_entity": "United States",
+        "r": "P17",
+        "r_name": "country"
+    },
+    {
+        "golden": false,
+        "title": "IBM Research \u2013 Brazil",
+        "h_idx": 6,
+        "t_idx": 3,
+        "head_entity": "Rio de Janeiro",
+        "tail_entity": "South America",
+        "r": "P30",
+        "r_name": "continent"
+    },
+    {
+        "golden": false,
+        "title": "Albemarle County, Virginia",
+        "h_idx": 0,
+        "t_idx": 8,
+        "head_entity": "Albemarle County",
+        "tail_entity": "1744",
+        "r": "P571",
+        "r_name": "inception"
+    },
+    {
+        "golden": false,
+        "title": "Outline of South Sudan",
+        "h_idx": 13,
+        "t_idx": 1,
+        "head_entity": "Juba",
+        "tail_entity": "Africa",
+        "r": "P30",
+        "r_name": "continent"
+    },
+    {
+        "golden": false,
+        "title": "Siberia Governorate",
+        "h_idx": 11,
+        "t_idx": 1,
+        "head_entity": "Urals",
+        "tail_entity": "Russia",
+        "r": "P17",
+        "r_name": "country"
+    },
+    {
+        "golden": false,
+        "title": "Live in New York (Laurie Anderson album)",
+        "h_idx": 14,
+        "t_idx": 2,
+        "head_entity": "Bright Red",
+        "tail_entity": "Nonesuch Records",
+        "r": "P264",
+        "r_name": "record label"
+    },
+    {
+        "golden": false,
+        "title": "Siberia Governorate",
+        "h_idx": 1,
+        "t_idx": 0,
+        "head_entity": "Russia",
+        "tail_entity": "Siberia Governorate",
+        "r": "P150",
+        "r_name": "contains administrative territorial entity"
+    },
+    {
+        "golden": false,
+        "title": "Outline of South Sudan",
+        "h_idx": 4,
+        "t_idx": 2,
+        "head_entity": "Sudan",
+        "tail_entity": "United Nations",
+        "r": "P463",
+        "r_name": "member of"
+    },
+    {
+        "golden": false,
+        "title": "Allen County, Ohio",
+        "h_idx": 2,
+        "t_idx": 13,
+        "head_entity": "Ohio",
+        "tail_entity": "General Assembly",
+        "r": "P194",
+        "r_name": "legislative body"
+    },
+    {
+        "golden": false,
+        "title": "Live in New York (Laurie Anderson album)",
+        "h_idx": 13,
+        "t_idx": 2,
+        "head_entity": "Big Science",
+        "tail_entity": "Nonesuch Records",
+        "r": "P264",
+        "r_name": "record label"
+    },
+    {
+        "golden": false,
+        "title": "Dollar General",
+        "h_idx": 17,
+        "t_idx": 1,
+        "head_entity": "Scottsville",
+        "tail_entity": "American",
+        "r": "P17",
+        "r_name": "country"
+    },
+    {
+        "golden": false,
+        "title": "America's Sweetheart (album)",
+        "h_idx": 23,
+        "t_idx": 14,
+        "head_entity": "United States",
+        "tail_entity": "California",
+        "r": "P150",
+        "r_name": "contains administrative territorial entity"
+    },
+    {
+        "golden": false,
+        "title": "Crouching Tiger, Hidden Dragon: Sword of Destiny",
+        "h_idx": 0,
+        "t_idx": 5,
+        "head_entity": "Crouching Tiger , Hidden Dragon : Sword of Destiny",
+        "tail_entity": "John Fusco",
+        "r": "P58",
+        "r_name": "screenwriter"
+    },
+    {
+        "golden": false,
+        "title": "America's Sweetheart (album)",
+        "h_idx": 6,
+        "t_idx": 4,
+        "head_entity": "Pretty on the Inside",
+        "tail_entity": "Virgin Records",
+        "r": "P264",
+        "r_name": "record label"
+    },
+    {
+        "golden": false,
+        "title": "Live in New York (Laurie Anderson album)",
+        "h_idx": 20,
+        "t_idx": 1,
+        "head_entity": "The Dream Before",
+        "tail_entity": "Laurie Anderson",
+        "r": "P175",
+        "r_name": "performer"
+    },
+    {
+        "golden": false,
+        "title": "Albemarle County, Virginia",
+        "h_idx": 0,
+        "t_idx": 3,
+        "head_entity": "Albemarle County",
+        "tail_entity": "Charlottesville",
+        "r": "P36",
+        "r_name": "capital"
+    },
+    {
+        "golden": false,
+        "title": "Lookin Ass",
+        "h_idx": 13,
+        "t_idx": 2,
+        "head_entity": "Trophies",
+        "tail_entity": "Nicki Minaj",
+        "r": "P175",
+        "r_name": "performer"
+    },
+    {
+        "golden": false,
+        "title": "America's Sweetheart (album)",
+        "h_idx": 14,
+        "t_idx": 23,
+        "head_entity": "California",
+        "tail_entity": "United States",
+        "r": "P131",
+        "r_name": "located in the administrative territorial entity"
+    },
+    {
+        "golden": false,
+        "title": "Brooks Pharmacy",
+        "h_idx": 8,
+        "t_idx": 22,
+        "head_entity": "the United States",
+        "tail_entity": "New England",
+        "r": "P150",
+        "r_name": "contains administrative territorial entity"
+    },
+    {
+        "golden": false,
+        "title": "Ned McEvoy",
+        "h_idx": 0,
+        "t_idx": 2,
+        "head_entity": "Edward P. \"Ned\" McEvoy",
+        "tail_entity": "Irish",
+        "r": "P27",
+        "r_name": "country of citizenship"
+    },
+    {
+        "golden": false,
+        "title": "Villanova Preparatory School",
+        "h_idx": 9,
+        "t_idx": 2,
+        "head_entity": "Augustinian Secondary Education Association",
+        "tail_entity": "the United States",
+        "r": "P17",
+        "r_name": "country"
+    },
+    {
+        "golden": false,
+        "title": "Skai TV",
+        "h_idx": 5,
+        "t_idx": 1,
+        "head_entity": "Athens",
+        "tail_entity": "Greek",
+        "r": "P17",
+        "r_name": "country"
+    },
+    {
+        "golden": false,
+        "title": "Robert K. Huntington",
+        "h_idx": 6,
+        "t_idx": 16,
+        "head_entity": "Battle of Midway",
+        "tail_entity": "4 June 1942",
+        "r": "P585",
+        "r_name": "point in time"
+    },
+    {
+        "golden": false,
+        "title": "Outline of South Sudan",
+        "h_idx": 4,
+        "t_idx": 9,
+        "head_entity": "Sudan",
+        "tail_entity": "African Union",
+        "r": "P463",
+        "r_name": "member of"
+    },
+    {
+        "golden": false,
+        "title": "Hooshang Seyhoun",
+        "h_idx": 0,
+        "t_idx": 4,
+        "head_entity": "Houshang Seyhoun",
+        "tail_entity": "\u00c9cole nationale sup\u00e9rieure des Beaux - Arts",
+        "r": "P69",
+        "r_name": "educated at"
+    },
+    {
+        "golden": false,
+        "title": "More (The Sisters of Mercy song)",
+        "h_idx": 2,
+        "t_idx": 7,
+        "head_entity": "Vision Thing",
+        "tail_entity": "Jim Steinman",
+        "r": "P162",
+        "r_name": "producer"
+    },
+    {
+        "golden": false,
+        "title": "Allen F. Moore",
+        "h_idx": 30,
+        "t_idx": 3,
+        "head_entity": "Monticello Cemetery",
+        "tail_entity": "U.S.",
+        "r": "P17",
+        "r_name": "country"
+    },
+    {
+        "golden": false,
+        "title": "Outline of South Sudan",
+        "h_idx": 5,
+        "t_idx": 4,
+        "head_entity": "Sudd",
+        "tail_entity": "Sudan",
+        "r": "P17",
+        "r_name": "country"
+    },
+    {
+        "golden": false,
+        "title": "America's Sweetheart (album)",
+        "h_idx": 8,
+        "t_idx": 4,
+        "head_entity": "Live Through This",
+        "tail_entity": "Virgin Records",
+        "r": "P264",
+        "r_name": "record label"
+    },
+    {
+        "golden": false,
+        "title": "Allen County, Ohio",
+        "h_idx": 13,
+        "t_idx": 2,
+        "head_entity": "General Assembly",
+        "tail_entity": "Ohio",
+        "r": "P1001",
+        "r_name": "applies to jurisdiction"
+    },
+    {
+        "golden": false,
+        "title": "Washington Place (West Virginia)",
+        "h_idx": 0,
+        "t_idx": 4,
+        "head_entity": "Washington Place",
+        "tail_entity": "West Virginia",
+        "r": "P131",
+        "r_name": "located in the administrative territorial entity"
+    },
+    {
+        "golden": false,
+        "title": "Crouching Tiger, Hidden Dragon: Sword of Destiny",
+        "h_idx": 0,
+        "t_idx": 23,
+        "head_entity": "Crouching Tiger , Hidden Dragon : Sword of Destiny",
+        "tail_entity": "February 18",
+        "r": "P577",
+        "r_name": "publication date"
+    },
+    {
+        "golden": false,
+        "title": "Jeanne Th\u00e9r\u00e8se du Han",
+        "h_idx": 19,
+        "t_idx": 6,
+        "head_entity": "L\u00e9opold",
+        "tail_entity": "France",
+        "r": "P27",
+        "r_name": "country of citizenship"
+    },
+    {
+        "golden": false,
+        "title": "Washington Place (West Virginia)",
+        "h_idx": 16,
+        "t_idx": 4,
+        "head_entity": "American",
+        "tail_entity": "West Virginia",
+        "r": "P150",
+        "r_name": "contains administrative territorial entity"
+    },
+    {
+        "golden": false,
+        "title": "Live in New York (Laurie Anderson album)",
+        "h_idx": 15,
+        "t_idx": 1,
+        "head_entity": "Home of the Brave and Strange Angels",
+        "tail_entity": "Laurie Anderson",
+        "r": "P175",
+        "r_name": "performer"
+    },
+    {
+        "golden": false,
+        "title": "Delaware General Assembly",
+        "h_idx": 16,
+        "t_idx": 1,
+        "head_entity": "House of Representatives",
+        "tail_entity": "U.S.",
+        "r": "P1001",
+        "r_name": "applies to jurisdiction"
+    },
+    {
+        "golden": false,
+        "title": "Outline of South Sudan",
+        "h_idx": 13,
+        "t_idx": 4,
+        "head_entity": "Juba",
+        "tail_entity": "Sudan",
+        "r": "P17",
+        "r_name": "country"
+    },
+    {
+        "golden": false,
+        "title": "Crouching Tiger, Hidden Dragon: Sword of Destiny",
+        "h_idx": 0,
+        "t_idx": 26,
+        "head_entity": "Crouching Tiger , Hidden Dragon : Sword of Destiny",
+        "tail_entity": "February 26, 2016",
+        "r": "P577",
+        "r_name": "publication date"
+    },
+    {
+        "golden": false,
+        "title": "Memogate (Pakistan)",
+        "h_idx": 9,
+        "t_idx": 11,
+        "head_entity": "Haqqani",
+        "tail_entity": "US",
+        "r": "P27",
+        "r_name": "country of citizenship"
+    },
+    {
+        "golden": false,
+        "title": "Allen F. Moore",
+        "h_idx": 30,
+        "t_idx": 4,
+        "head_entity": "Monticello Cemetery",
+        "tail_entity": "Illinois",
+        "r": "P131",
+        "r_name": "located in the administrative territorial entity"
+    },
+    {
+        "golden": false,
+        "title": "Grand Wing Servo-Tech",
+        "h_idx": 3,
+        "t_idx": 4,
+        "head_entity": "City of Industry",
+        "tail_entity": "California",
+        "r": "P131",
+        "r_name": "located in the administrative territorial entity"
+    },
+    {
+        "golden": false,
+        "title": "Villanova Preparatory School",
+        "h_idx": 11,
+        "t_idx": 1,
+        "head_entity": "John Cantwell",
+        "tail_entity": "Augustinian Catholic",
+        "r": "P140",
+        "r_name": "religion"
+    },
+    {
+        "golden": false,
+        "title": "Outline of South Sudan",
+        "h_idx": 5,
+        "t_idx": 1,
+        "head_entity": "Sudd",
+        "tail_entity": "Africa",
+        "r": "P30",
+        "r_name": "continent"
+    },
+    {
+        "golden": false,
+        "title": "Skai TV",
+        "h_idx": 3,
+        "t_idx": 0,
+        "head_entity": "Skai Group",
+        "tail_entity": "Skai TV",
+        "r": "P355",
+        "r_name": "subsidiary"
+    },
+    {
+        "golden": false,
+        "title": "Memogate (Pakistan)",
+        "h_idx": 1,
+        "t_idx": 4,
+        "head_entity": "Mike Mullen",
+        "tail_entity": "Pakistani",
+        "r": "P27",
+        "r_name": "country of citizenship"
+    },
+    {
+        "golden": false,
+        "title": "America's Sweetheart (album)",
+        "h_idx": 0,
+        "t_idx": 2,
+        "head_entity": "America 's Sweetheart",
+        "tail_entity": "Love",
+        "r": "P175",
+        "r_name": "performer"
+    },
+    {
+        "golden": false,
+        "title": "Allen County, Ohio",
+        "h_idx": 9,
+        "t_idx": 10,
+        "head_entity": "Battle of Frenchtown",
+        "tail_entity": "War of 1812",
+        "r": "P361",
+        "r_name": "part of"
+    },
+    {
+        "golden": false,
+        "title": "Grand Wing Servo-Tech",
+        "h_idx": 0,
+        "t_idx": 2,
+        "head_entity": "Grand Wing Servo-Tech Co., Ltd.",
+        "tail_entity": "U.S.",
+        "r": "P17",
+        "r_name": "country"
+    },
+    {
+        "golden": false,
+        "title": "America's Sweetheart (album)",
+        "h_idx": 5,
+        "t_idx": 25,
+        "head_entity": "Hole",
+        "tail_entity": "Patty Schemel",
+        "r": "P527",
+        "r_name": "has part"
+    },
+    {
+        "golden": false,
+        "title": "Allen County, Ohio",
+        "h_idx": 0,
+        "t_idx": 6,
+        "head_entity": "Allen County",
+        "tail_entity": "1820",
+        "r": "P571",
+        "r_name": "inception"
+    },
+    {
+        "golden": false,
+        "title": "Siberia Governorate",
+        "h_idx": 7,
+        "t_idx": 1,
+        "head_entity": "Kazan Governorate",
+        "tail_entity": "Russia",
+        "r": "P17",
+        "r_name": "country"
+    },
+    {
+        "golden": false,
+        "title": "Siberia Governorate",
+        "h_idx": 5,
+        "t_idx": 0,
+        "head_entity": "Tobolsk",
+        "tail_entity": "Siberia Governorate",
+        "r": "P131",
+        "r_name": "located in the administrative territorial entity"
+    },
+    {
+        "golden": false,
+        "title": "Conrad O. Johnson",
+        "h_idx": 0,
+        "t_idx": 4,
+        "head_entity": "Conrad Oberon Johnson",
+        "tail_entity": "Houston",
+        "r": "P20",
+        "r_name": "place of death"
+    },
+    {
+        "golden": false,
+        "title": "Delaware General Assembly",
+        "h_idx": 3,
+        "t_idx": 1,
+        "head_entity": "Delaware Senate",
+        "tail_entity": "U.S.",
+        "r": "P1001",
+        "r_name": "applies to jurisdiction"
+    },
+    {
+        "golden": false,
+        "title": "Johan Gottlieb Gahn",
+        "h_idx": 0,
+        "t_idx": 6,
+        "head_entity": "Gahn",
+        "tail_entity": "Uppsala",
+        "r": "P69",
+        "r_name": "educated at"
+    },
+    {
+        "golden": false,
+        "title": "Hooshang Seyhoun",
+        "h_idx": 11,
+        "t_idx": 3,
+        "head_entity": "Tehran",
+        "tail_entity": "Iranian",
+        "r": "P131",
+        "r_name": "located in the administrative territorial entity"
+    },
+    {
+        "golden": false,
+        "title": "Memogate (Pakistan)",
+        "h_idx": 14,
+        "t_idx": 4,
+        "head_entity": "National Security",
+        "tail_entity": "Pakistani",
+        "r": "P17",
+        "r_name": "country"
+    },
+    {
+        "golden": false,
+        "title": "Palestinian National Theatre",
+        "h_idx": 4,
+        "t_idx": 3,
+        "head_entity": "American Colony",
+        "tail_entity": "Jerusalem",
+        "r": "P131",
+        "r_name": "located in the administrative territorial entity"
+    },
+    {
+        "golden": false,
+        "title": "Samsung Galaxy S series",
+        "h_idx": 11,
+        "t_idx": 4,
+        "head_entity": "Galaxy Tab S",
+        "tail_entity": "Samsung",
+        "r": "P178",
+        "r_name": "developer"
+    },
+    {
+        "golden": false,
+        "title": "Albemarle County, Virginia",
+        "h_idx": 3,
+        "t_idx": 0,
+        "head_entity": "Charlottesville",
+        "tail_entity": "Albemarle County",
+        "r": "P1376",
+        "r_name": "capital of"
+    },
+    {
+        "golden": false,
+        "title": "Jeanne Th\u00e9r\u00e8se du Han",
+        "h_idx": 10,
+        "t_idx": 11,
+        "head_entity": "Catherine Fran\u00e7oise de Roquefeuil de Puydebar",
+        "tail_entity": "c.1680",
+        "r": "P569",
+        "r_name": "date of birth"
+    },
+    {
+        "golden": false,
+        "title": "Siberia Governorate",
+        "h_idx": 0,
+        "t_idx": 5,
+        "head_entity": "Siberia Governorate",
+        "tail_entity": "Tobolsk",
+        "r": "P36",
+        "r_name": "capital"
+    },
+    {
+        "golden": false,
+        "title": "More (The Sisters of Mercy song)",
+        "h_idx": 0,
+        "t_idx": 5,
+        "head_entity": "More",
+        "tail_entity": "15 December 1990",
+        "r": "P577",
+        "r_name": "publication date"
+    },
+    {
+        "golden": false,
+        "title": "America's Sweetheart (album)",
+        "h_idx": 25,
+        "t_idx": 5,
+        "head_entity": "Patty Schemel",
+        "tail_entity": "Hole",
+        "r": "P463",
+        "r_name": "member of"
+    },
+    {
+        "golden": false,
+        "title": "Outline of South Sudan",
+        "h_idx": 0,
+        "t_idx": 3,
+        "head_entity": "South Sudan",
+        "tail_entity": "Eastern Africa",
+        "r": "P361",
+        "r_name": "part of"
+    },
+    {
+        "golden": false,
+        "title": "Live in New York (Laurie Anderson album)",
+        "h_idx": 6,
+        "t_idx": 10,
+        "head_entity": "New York",
+        "tail_entity": "United States",
+        "r": "P17",
+        "r_name": "country"
+    },
+    {
+        "golden": false,
+        "title": "Allen F. Moore",
+        "h_idx": 5,
+        "t_idx": 6,
+        "head_entity": "St. Charles",
+        "tail_entity": "Kane County",
+        "r": "P131",
+        "r_name": "located in the administrative territorial entity"
+    },
+    {
+        "golden": false,
+        "title": "America's Sweetheart (album)",
+        "h_idx": 10,
+        "t_idx": 8,
+        "head_entity": "Celebrity Skin",
+        "tail_entity": "Live Through This",
+        "r": "P155",
+        "r_name": "follows"
+    },
+    {
+        "golden": false,
+        "title": "Ned McEvoy",
+        "h_idx": 7,
+        "t_idx": 5,
+        "head_entity": "McEvoy",
+        "tail_entity": "Abbeyleix",
+        "r": "P19",
+        "r_name": "place of birth"
+    },
+    {
+        "golden": false,
+        "title": "Albemarle County, Virginia",
+        "h_idx": 4,
+        "t_idx": 2,
+        "head_entity": "Charlottesville Metropolitan Statistical Area",
+        "tail_entity": "Commonwealth of Virginia",
+        "r": "P131",
+        "r_name": "located in the administrative territorial entity"
+    },
+    {
+        "golden": false,
+        "title": "America's Sweetheart (album)",
+        "h_idx": 6,
+        "t_idx": 10,
+        "head_entity": "Pretty on the Inside",
+        "tail_entity": "Celebrity Skin",
+        "r": "P156",
+        "r_name": "followed by"
+    },
+    {
+        "golden": false,
+        "title": "Grand Wing Servo-Tech",
+        "h_idx": 0,
+        "t_idx": 1,
+        "head_entity": "Grand Wing Servo-Tech Co., Ltd.",
+        "tail_entity": "Taiwanese",
+        "r": "P17",
+        "r_name": "country"
+    },
+    {
+        "golden": false,
+        "title": "Low Pass, Oregon",
+        "h_idx": 4,
+        "t_idx": 2,
+        "head_entity": "Long Tom River",
+        "tail_entity": "Oregon",
+        "r": "P131",
+        "r_name": "located in the administrative territorial entity"
+    },
+    {
+        "golden": false,
+        "title": "Villanova Preparatory School",
+        "h_idx": 13,
+        "t_idx": 14,
+        "head_entity": "Villanova",
+        "tail_entity": "Pennsylvania",
+        "r": "P131",
+        "r_name": "located in the administrative territorial entity"
+    },
+    {
+        "golden": false,
+        "title": "Allen F. Moore",
+        "h_idx": 0,
+        "t_idx": 15,
+        "head_entity": "Allen Francis Moore",
+        "tail_entity": "University of Illinois",
+        "r": "P69",
+        "r_name": "educated at"
+    },
+    {
+        "golden": false,
+        "title": "America's Sweetheart (album)",
+        "h_idx": 8,
+        "t_idx": 10,
+        "head_entity": "Live Through This",
+        "tail_entity": "Celebrity Skin",
+        "r": "P156",
+        "r_name": "followed by"
+    },
+    {
+        "golden": false,
+        "title": "Memogate (Pakistan)",
+        "h_idx": 4,
+        "t_idx": 13,
+        "head_entity": "Pakistani",
+        "tail_entity": "Asif Ali Zardari",
+        "r": "P6",
+        "r_name": "head of government"
+    },
+    {
+        "golden": false,
+        "title": "Albemarle County, Virginia",
+        "h_idx": 3,
+        "t_idx": 2,
+        "head_entity": "Charlottesville",
+        "tail_entity": "Commonwealth of Virginia",
+        "r": "P131",
+        "r_name": "located in the administrative territorial entity"
+    },
+    {
+        "golden": false,
+        "title": "Lookin Ass",
+        "h_idx": 0,
+        "t_idx": 6,
+        "head_entity": "Lookin Ass",
+        "tail_entity": "2014",
+        "r": "P361",
+        "r_name": "part of"
+    },
+    {
+        "golden": false,
+        "title": "Delaware General Assembly",
+        "h_idx": 5,
+        "t_idx": 1,
+        "head_entity": "Delaware House of Representatives",
+        "tail_entity": "U.S.",
+        "r": "P1001",
+        "r_name": "applies to jurisdiction"
+    },
+    {
+        "golden": false,
+        "title": "Samsung Galaxy S series",
+        "h_idx": 8,
+        "t_idx": 4,
+        "head_entity": "Samsung Galaxy Note",
+        "tail_entity": "Samsung",
+        "r": "P178",
+        "r_name": "developer"
+    },
+    {
+        "golden": false,
+        "title": "America's Sweetheart (album)",
+        "h_idx": 10,
+        "t_idx": 4,
+        "head_entity": "Celebrity Skin",
+        "tail_entity": "Virgin Records",
+        "r": "P264",
+        "r_name": "record label"
+    },
+    {
+        "golden": false,
+        "title": "Villanova Preparatory School",
+        "h_idx": 4,
+        "t_idx": 3,
+        "head_entity": "Ojai",
+        "tail_entity": "California",
+        "r": "P131",
+        "r_name": "located in the administrative territorial entity"
+    },
+    {
+        "golden": false,
+        "title": "Pointr",
+        "h_idx": 2,
+        "t_idx": 4,
+        "head_entity": "iBeacons",
+        "tail_entity": "Apple Inc.",
+        "r": "P178",
+        "r_name": "developer"
+    },
+    {
+        "golden": false,
+        "title": "Villanova Preparatory School",
+        "h_idx": 17,
+        "t_idx": 2,
+        "head_entity": "North America",
+        "tail_entity": "the United States",
+        "r": "P527",
+        "r_name": "has part"
+    },
+    {
+        "golden": false,
+        "title": "The Yorkshire Post",
+        "h_idx": 2,
+        "t_idx": 3,
+        "head_entity": "England",
+        "tail_entity": "Yorkshire",
+        "r": "P150",
+        "r_name": "contains administrative territorial entity"
+    },
+    {
+        "golden": false,
+        "title": "Urgut",
+        "h_idx": 2,
+        "t_idx": 11,
+        "head_entity": "Uzbekistan",
+        "tail_entity": "Samarkand",
+        "r": "P36",
+        "r_name": "capital"
+    },
+    {
+        "golden": false,
+        "title": "Outline of South Sudan",
+        "h_idx": 14,
+        "t_idx": 4,
+        "head_entity": "Ramciel",
+        "tail_entity": "Sudan",
+        "r": "P17",
+        "r_name": "country"
+    },
+    {
+        "golden": false,
+        "title": "IBM Research \u2013 Brazil",
+        "h_idx": 3,
+        "t_idx": 9,
+        "head_entity": "South America",
+        "tail_entity": "Brazil",
+        "r": "P150",
+        "r_name": "contains administrative territorial entity"
+    },
+    {
+        "golden": false,
+        "title": "America's Sweetheart (album)",
+        "h_idx": 6,
+        "t_idx": 24,
+        "head_entity": "Pretty on the Inside",
+        "tail_entity": "Linda Perry",
+        "r": "P162",
+        "r_name": "producer"
+    },
+    {
+        "golden": false,
+        "title": "The Yorkshire Post",
+        "h_idx": 4,
+        "t_idx": 3,
+        "head_entity": "Derbyshire",
+        "tail_entity": "Yorkshire",
+        "r": "P131",
+        "r_name": "located in the administrative territorial entity"
+    },
+    {
+        "golden": false,
+        "title": "Lookin Ass",
+        "h_idx": 0,
+        "t_idx": 3,
+        "head_entity": "Lookin Ass",
+        "tail_entity": "Detail",
+        "r": "P162",
+        "r_name": "producer"
+    },
+    {
+        "golden": false,
+        "title": "Norvelt, Pennsylvania",
+        "h_idx": 8,
+        "t_idx": 3,
+        "head_entity": "Calumet",
+        "tail_entity": "Pennsylvania",
+        "r": "P131",
+        "r_name": "located in the administrative territorial entity"
+    },
+    {
+        "golden": false,
+        "title": "Villanova Preparatory School",
+        "h_idx": 2,
+        "t_idx": 17,
+        "head_entity": "the United States",
+        "tail_entity": "North America",
+        "r": "P361",
+        "r_name": "part of"
+    },
+    {
+        "golden": false,
+        "title": "More (The Sisters of Mercy song)",
+        "h_idx": 0,
+        "t_idx": 7,
+        "head_entity": "More",
+        "tail_entity": "Jim Steinman",
+        "r": "P162",
+        "r_name": "producer"
+    },
+    {
+        "golden": false,
+        "title": "Siberia Governorate",
+        "h_idx": 2,
+        "t_idx": 12,
+        "head_entity": "Russian Empire",
+        "tail_entity": "Siberia",
+        "r": "P150",
+        "r_name": "contains administrative territorial entity"
+    },
+    {
+        "golden": false,
+        "title": "Washington Place (West Virginia)",
+        "h_idx": 8,
+        "t_idx": 3,
+        "head_entity": "Romney",
+        "tail_entity": "Hampshire County",
+        "r": "P131",
+        "r_name": "located in the administrative territorial entity"
+    },
+    {
+        "golden": false,
+        "title": "Beibu Gulf Economic Rim",
+        "h_idx": 4,
+        "t_idx": 9,
+        "head_entity": "Gulf of Tonkin",
+        "tail_entity": "Vietnam",
+        "r": "P205",
+        "r_name": "basin country"
+    },
+    {
+        "golden": false,
+        "title": "IBM Research \u2013 Brazil",
+        "h_idx": 0,
+        "t_idx": 9,
+        "head_entity": "IBM Research \u2013 Brazil",
+        "tail_entity": "Brazil",
+        "r": "P17",
+        "r_name": "country"
+    },
+    {
+        "golden": false,
+        "title": "More (The Sisters of Mercy song)",
+        "h_idx": 2,
+        "t_idx": 12,
+        "head_entity": "Vision Thing",
+        "tail_entity": "Steinman",
+        "r": "P162",
+        "r_name": "producer"
+    },
+    {
+        "golden": false,
+        "title": "IBM Research \u2013 Brazil",
+        "h_idx": 7,
+        "t_idx": 2,
+        "head_entity": "IBM",
+        "tail_entity": "IBM Research",
+        "r": "P355",
+        "r_name": "subsidiary"
+    },
+    {
+        "golden": false,
+        "title": "Allen F. Moore",
+        "h_idx": 27,
+        "t_idx": 26,
+        "head_entity": "Texas",
+        "tail_entity": "San Antonio",
+        "r": "P150",
+        "r_name": "contains administrative territorial entity"
+    },
+    {
+        "golden": false,
+        "title": "Siberia Governorate",
+        "h_idx": 11,
+        "t_idx": 1,
+        "head_entity": "Urals",
+        "tail_entity": "Russia",
+        "r": "P131",
+        "r_name": "located in the administrative territorial entity"
+    },
+    {
+        "golden": false,
+        "title": "IBM Research \u2013 Brazil",
+        "h_idx": 2,
+        "t_idx": 9,
+        "head_entity": "IBM Research",
+        "tail_entity": "Brazil",
+        "r": "P17",
+        "r_name": "country"
+    },
+    {
+        "golden": false,
+        "title": "Portland Golf Club",
+        "h_idx": 16,
+        "t_idx": 1,
+        "head_entity": "Portland Open",
+        "tail_entity": "United States",
+        "r": "P17",
+        "r_name": "country"
+    },
+    {
+        "golden": false,
+        "title": "Urgut",
+        "h_idx": 3,
+        "t_idx": 2,
+        "head_entity": "Urgut District",
+        "tail_entity": "Uzbekistan",
+        "r": "P131",
+        "r_name": "located in the administrative territorial entity"
+    },
+    {
+        "golden": false,
+        "title": "Portland Golf Club",
+        "h_idx": 5,
+        "t_idx": 2,
+        "head_entity": "Washington County",
+        "tail_entity": "Portland",
+        "r": "P150",
+        "r_name": "contains administrative territorial entity"
+    },
+    {
+        "golden": false,
+        "title": "Skai TV",
+        "h_idx": 3,
+        "t_idx": 2,
+        "head_entity": "Skai Group",
+        "tail_entity": "Piraeus",
+        "r": "P159",
+        "r_name": "headquarters location"
+    }]

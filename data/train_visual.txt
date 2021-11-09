@@ -1,0 +1,227 @@
+##doc
+0 Zest Airways , Inc. operated as AirAsia Zest ( formerly Asian Spirit and Zest Air ) , was a low - cost airline based at the Ninoy Aquino International Airport in Pasay City , Metro Manila in the Philippines .
+1 It operated scheduled domestic and international tourist services , mainly feeder services linking Manila and Cebu with 24 domestic destinations in support of the trunk route operations of other airlines .
+2 In 2013 , the airline became an affiliate of Philippines AirAsia operating their brand separately .
+3 Its main base was Ninoy Aquino International Airport , Manila .
+4 The airline was founded as Asian Spirit , the first airline in the Philippines to be run as a cooperative .
+5 On August 16 , 2013 , the Civil Aviation Authority of the Philippines ( CAAP ) , the regulating body of the Government of the Republic of the Philippines for civil aviation , suspended Zest Air flights until further notice because of safety issues .
+6 Less than a year after AirAsia and Zest Air 's strategic alliance , the airline has been rebranded as AirAsia Zest .
+7 The airline was merged into AirAsia Philippines in January 2016 .
+##labels
+0 Zest Airways, Inc., Pasay City, headquarters location, [0]
+1 Zest Airways, Inc., Philippines, country, [2, 4, 7]
+2 Zest Air, Philippines, country, [6, 7] [其实这里的Zest Air 和 Zest Airways 应该是同一个实体]
+3 Pasay City, Philippines, country, [0]
+4 Pasay City, Metro Manila, located in the administrative territorial entity, [0]
+5 Philippines, Metro Manila, contains administrative territorial entity, [0]
+6 Manila, Philippines, country, [0, 3]
+7 Metro Manila, Pasay City, contains administrative territorial entity, [0]
+8 Metro Manila, Philippines, located in the administrative territorial entity, [0, 3]
+9 Metro Manila, Philippines, country, [0, 3]
+10 Ninoy Aquino International Airport, Pasay City, located in the administrative territorial entity, [0, 3]
+11 Ninoy Aquino International Airport, Philippines, country, [0, 3]
+12 Asian Spirit, Philippines, country, [4]
+------------------------
+##doc
+0 The short - beaked common dolphin ( Delphinus delphis ) is a species of common dolphin .
+1 It has a larger range than the long - beaked common dolphin ( D. capensis ) , occurring throughout warm - temperate and tropical oceans , including the Indian Ocean although in smaller quantities than other places they are found .
+2 There are more short - beaked common dolphins than any other dolphin species in the warm - temperate portions of the Atlantic and Pacific Oceans .
+3 It is also found in the Caribbean and Mediterranean Seas .
+4 The short - beaked common dolphin is also abundant in the Black Sea , Gulf of Mexico , and Red Sea .
+5 They follow the gulf stream up to Norwegian waters .
+6 Seldom do any short - beaked dolphin venture near the Arctic .
+##labels
+------------------------
+##doc
+0 Niklas Bergqvist ( born 6 October 1962 in Stockholm ) , is a Swedish songwriter , producer and musician .
+1 His career started in 1984 , as a founding member of the Synthpop band Shanghai , which he started along his school friends .
+2 The band released two albums and numerous singles , with their debut single " Ballerina " , produced by former Europe guitarist Kee Marcello .
+3 Following the success of the single , the album also gained positive attention , resulting in the band touring around Sweden .
+4 The second , and final , studio album was produced by Swedish pop star Harpo .
+5 After the band split - up in 1987 , Bergqvist formed and played in several other bands until he decided to focus more on songwriting , resulting in several releases ever since .
+6 In 2015 , he founded the independent record label Tracks of Sweden with songwriting partner Simon Johansson .
+##labels
+0 Stockholm, Sweden, country, [0]
+1 Harpo, Sweden, country of citizenship, [4]
+2 Bergqvist, 6 October 1962, date of birth, [0]
+3 Bergqvist, Stockholm, place of birth, [0]
+4 Bergqvist, Sweden, country of citizenship, [0]
+------------------------
+##doc
+0 Pacific Fair is a major shopping centre in Broadbeach Waters on the Gold Coast , Queensland , Australia .
+1 It was Queensland 's largest regional shopping centre until 2006 .
+2 Pacific Fair was developed by Hooker Retail Developments and opened in 1977 on what was swampland with 96 specialty stores and two anchor tenants .
+3 Since then , Pacific Fair has undergone numerous expansions and has grown to have more than 300 specialty stores and four anchor tenants .
+4 In January 2014 , work began on a major redevelopment project to meet the predicted regional growth on the Gold Coast .
+5 Prior to the redevelopment , the shopping centre had four main major stores including a four - level Myer , Kmart , Target , Coles and Toys ' R ' Us .
+6 Daimaru operated in the centre before its Australian withdrawal , albeit briefly .
+7 It also had a 12-screen Birch Carroll and Coyle Cinema ( re - opened as Event Cinemas in late 2015 ) .
+8 Pacific Fair is a major public transport interchange on the Gold Coast , serviced by Surfside Buslines , and the Broadbeach South station located not far from the shopping centre .
+9 Nearby is The Star Gold Coast and Gold Coast Convention & Exhibition Centre .
+10 Pacific Fair fronts Little Tallebudgera Creek and is the southern end of the Surfers Riverwalk .
+11 This shopping centre was featured on the third season of The Mole .
+##labels
+0 Queensland, Australia, located in the administrative territorial entity, [0]
+1 Queensland, Australia, country, [0, 5, 6]
+2 Queensland, Gold Coast, contains administrative territorial entity, [0, 1, 4]
+3 Australia, Queensland, contains administrative territorial entity, [0]
+4 Australia, Australian, ethnic group, [0, 5, 6]  # 错误的抽取，句子中就没有体现出这种关系
+5 Event Cinemas, Australia, country, [0, 5, 6, 7]
+6 Surfers Riverwalk, Queensland, located in the administrative territorial entity, [0, 1, 10]
+7 Surfers Riverwalk, Australia, country, [0, 1, 10]
+8 Broadbeach Waters, Queensland, located in the administrative territorial entity, [0, 1]
+9 Broadbeach Waters, Australia, country, [0]
+10 Broadbeach Waters, Gold Coast, located in the administrative territorial entity, [0]
+11 Gold Coast, Queensland, located in the administrative territorial entity, [0, 1, 4, 8]
+12 Gold Coast, Australia, country, [0, 1, 4, 5, 6]
+13 Toys ' R ' Us, Australia, country, [0, 4, 5]
+14 Myer, Australia, country, [0, 1, 4, 5]
+15 Kmart, Australia, country, [0, 1, 4, 5]
+16 Coles, Australia, country, [0, 1, 4, 5]
+17 Daimaru, Australia, country, [0, 1, 5, 6]
+18 Surfside Buslines, Australia, country, [8, 0]
+19 Broadbeach South station, Queensland, located in the administrative territorial entity, [0, 1, 8]
+20 Broadbeach South station, Australia, country, [8, 0, 5, 6]
+21 Star Gold Coast, Queensland, located in the administrative territorial entity, [0, 9, 1]
+22 Star Gold Coast, Australia, country, [0, 9, 1]
+23 Pacific Fair, Queensland, located in the administrative territorial entity, [8, 1, 0]
+24 Pacific Fair, Australia, country, [0, 1, 5, 6]
+25 Pacific Fair, 1977, inception, [2]
+26 Little Tallebudgera Creek, Australia, country, [0, 1, 10]
+27 Gold Coast Convention & Exhibition Centre, Australia, country, [0, 9, 1]
+------------------------
+##doc
+0 The Ministry of Home Security was a British government department established in 1939 to direct national civil defence ( primarily tasked with organising air raid precautions ) during the Second World War .
+1 The Ministry for Home Security was headed by Sir John Anderson the Home Secretary and Minister of Home Security .
+2 The Ministry 's responsibilities covered all central and regional civil defence organisations ( such as air raid wardens , rescue squads , fire services , and the Women ’s Voluntary Service ) .
+3 It was also responsible for giving approval to local ARP schemes , and providing public shelters .
+4 The Ministry ( run under the auspices of the Home Office ) produced hundreds of leaflets that were delivered to the population advising on how to deal with the impending air raids .
+5 It also managed propaganda poster campaigns to encourage , amongst other things , the carrying of gas masks and for volunteers to join civil defence groups like the Fire Guards .
+6 In October 1940 , Sir John Anderson was replaced by Herbert Morrison in a reshuffle precipitated by Neville Chamberlain 's resignation due to ill - health .
+7 With the Allied victory in Europe the Ministry was disbanded in May 1945 .
+##labels
+0 Ministry for Home Security, 1939, inception, [0]
+1 Ministry for Home Security, May 1945, dissolved, abolished or demolished, [7]
+2 John Anderson, Second World War, conflict, [0, 1]
+3 John Anderson, British, country of citizenship, [0, 1]
+4 Herbert Morrison, Second World War, conflict, [0, 6]
+5 Herbert Morrison, British, country of citizenship, [0, 6]
+6 British, Europe, continent, [0, 7]
+7 Neville Chamberlain, Second World War, conflict, [0, 6]
+8 Neville Chamberlain, British, country of citizenship, [0, 6]
+9 Home Office, British, country, [0, 4]
+10 Second World War, Europe, location, [0, 7]
+------------------------
+##doc
+0 The Lakes is a locality in Western Australia within the Shire of Mundaring .
+1 It is located east of the capital city of Perth at the junction of the Great Eastern Highway and the Great Southern Highway , and is the easternmost suburb within the Metropolitan Region Scheme .
+2 At the , The Lakes had a population of 45 .
+3 The main features of the community include a roadhouse and service station at the junction between the highways .
+4 It borders on the western ward of the Shire of Northam and the community of Woottating .
+5 It is also the locality in which Buckeridge Group of Companies ( BGC ) have quarrying operations .
+6 BGC trucks carting material from the quarry use as their main route the Great Eastern Highway to various locations in the Perth metropolitan area , including the brick manufacturing location close to Perth Airport .
+7 From the junction it is possible to travel to Northam on the northern fork , or York on the southern fork .
+##labels
+0 Western Australia, Shire of Mundaring, contains administrative territorial entity, [0]
+1 Western Australia, Shire of Northam, contains administrative territorial entity, [0, 4]
+2 Shire of Mundaring, Western Australia, located in the administrative territorial entity, [0]
+3 Perth, Western Australia, capital of, [0, 1, 5, 6]
+4 Perth, Western Australia, located in the administrative territorial entity, [0, 1]
+5 Great Southern Highway, Western Australia, located in the administrative territorial entity, [0, 1]
+6 Metropolitan Region Scheme, Western Australia, located in the administrative territorial entity, [0, 1]
+7 Perth Airport, Western Australia, located in the administrative territorial entity, [0, 1, 6]
+8 Great Eastern Highway, Western Australia, located in the administrative territorial entity, [0, 1, 5, 6]
+9 Northam, Western Australia, located in the administrative territorial entity, [0, 4, 7]
+10 Shire of Northam, Western Australia, located in the administrative territorial entity, [0, 4]
+11 Western Australia, Northam, contains administrative territorial entity, [0, 4, 7]
+------------------------
+##doc
+0 Alton is a city on the Mississippi River in Madison County , Illinois , United States , about north of St. Louis , Missouri .
+1 The population was 27,865 at the 2010 census .
+2 It is a part of the Metro - East region of the Greater St. Louis metropolitan area .
+3 It is famous for its limestone bluffs along the river north of the city , for its role preceding and during the American Civil War , and as the home town of jazz musician Miles Davis and Robert Wadlow , the tallest known person in history .
+4 It was the site of the last Abraham Lincoln and Stephen Douglas debate in October 1858 .
+5 The former state penitentiary in Alton was used during the Civil War to hold up to 12,000 Confederate prisoners of war .
+##labels
+0 Mississippi River, Illinois, located in the administrative territorial entity, [0]
+1 Mississippi River, United States, country, [0, 3]
+2 Madison County, Illinois, located in the administrative territorial entity, [0]
+3 Madison County, United States, country, [0, 3]
+4 Illinois, Mississippi River, located in or next to body of water, [0]
+5 Illinois, Madison County, contains administrative territorial entity, [0]
+6 Illinois, United States, located in the administrative territorial entity, [0]
+7 Illinois, United States, country, [0]
+8 United States, Illinois, contains administrative territorial entity, [0]
+9 United States, Missouri, contains administrative territorial entity, [0]
+10 Missouri, United States, located in the administrative territorial entity, [0]
+11 Missouri, United States, country, [0]
+12 Greater St. Louis, United States, country, [0, 2]
+13 American Civil War, United States, country, [0, 3, 5]
+14 American Civil War, United States, country of origin, [0, 3, 5]
+15 Miles Davis, United States, country of citizenship, [0, 3]
+16 Miles Davis, Alton, place of birth, [0, 3]
+17 Robert Wadlow, United States, country of citizenship, [0, 3]
+18 Robert Wadlow, Alton, place of birth, [0, 3]
+19 Robert Wadlow, Alton, residence, [0, 3]
+20 Metro - East, United States, country, [0, 2]
+21 Alton, Madison County, located in the administrative territorial entity, [0]
+22 Alton, United States, country, [0, 3]
+------------------------
+##doc
+0 Us and Them is the fifth studio album by English band Godflesh .
+1 It was released through Earache Records on 17 May 1999 in Europe and on 8 June 1999 in North America .
+2 As with Godflesh 's 1997 remix album Love and Hate in Dub , Us and Them is influenced by breakbeats , drum and bass , oldschool jungle , trip hop and hip hop .
+3 Shortly after Us and Them 's release , Godflesh frontman Justin Broadrick admitted that he " hated " the album as it was the expression of an " identity crisis " .
+4 Years later , he revised his thoughts , saying that his hatred of Us and Them was " overstated " , and that his main issue in the album lies in its more " cringe - worthy moments . "
+##labels
+0 Godflesh, Earache Records, record label, [0, 1]
+1 Godflesh, Justin Broadrick, has part, [3]
+2 Justin Broadrick, Godflesh, member of, [3]
+3 Justin Broadrick, Earache Records, record label, [0, 1, 3]
+4 Us and Them, Godflesh, performer, [0]
+5 Us and Them, Earache Records, record label, [0, 1]
+6 Us and Them, 8 June 1999, publication date, [0, 1]
+7 Love and Hate in Dub, Godflesh, performer, [2]
+8 Love and Hate in Dub, 1997, publication date, [2]
+------------------------
+##doc
+0 Nicola Lake is a glacially formed narrow , deep lake located in the South - Central Interior of British Columbia , Canada approximately thirty kilometres northeast of the city of Merritt .
+1 It was a centrepoint of the first settlements in the grasslands lying south of Kamloops , and today is used for recreation and as a water storage site to provide irrigation and water flows to fisheries downstream in the Nicola River .
+2 The lake is important in the history of the local Nicola people as the location of one of their major communities , Nicola Lake Indian Reserve No .
+3 1 , which lies on its eastern shore and is the home of the Upper Nicola Indian Band .
+4 Many of the band work for the Douglas Lake Cattle Company , aka the Douglas Lake Ranch , whose headquarters are also adjacent to the lake .
+##labels
+0 Nicola Lake, British Columbia, located in the administrative territorial entity, [0]
+1 Nicola Lake, Canada, country, [0]
+2 South-Central Interior, British Columbia, located in the administrative territorial entity, [0]
+3 South-Central Interior, Canada, country, [0]
+4 British Columbia, South-Central Interior, contains administrative territorial entity, [0]
+5 British Columbia, Canada, located in the administrative territorial entity, [0]
+6 British Columbia, Canada, country, [0]
+7 Canada, British Columbia, contains administrative territorial entity, [0]
+8 Kamloops, Canada, country, [0, 1]
+9 Merritt, Canada, country, [0]
+10 Nicola Lake Indian Reserve, Canada, country, [0, 2]
+------------------------
+##doc
+0 Jonas Geirnaert ( born July 28 , 1982 ) studied animation at the KASK in Ghent .
+1 In May 2004 he won the Short Film Jury Prize at the Cannes Film Festival with his animated short Flatlife ( 11 min ) .
+2 Of the copy he sent in for selection only the first minute had sound .
+3 This is because this was his graduation project , and it was n't completely finished at the final date for selection entries .
+4 Although Flatlife has no political message , Jonas ' previous movie , The All - American Alphabet , clearly has one .
+5 On stage in Cannes , Jonas had a message for all Americans : " Do n't vote Bush " .
+6 At that moment such statements were very popular , however his political preference has to be situated in the extreme - left corner as he is a militant for the marxist party Workers Party of Belgium .
+7 In the fall of 2005 Geirnaert made the TV comedy series Neveneffecten for Canvas ( public Flemish television ) with his fellow comedians Lieven Scheire , Koen De Poorter and Jelle De Beule .
+8 In 2011 this same group of four made the television show BASTA which also offered satirical critique on current cultural phenomenon , like help desks , uncritical journalism , television call games , the production of meat and internet scammers .
+9 Through their actions some of the more fraudulent abuses have been put to a stop , e.g.
+10 the de facto illegal television calling games have been banned from television in Flanders .
+##labels
+0 Jonas Geirnaert, July 28, 1982, date of birth, [0]
+1 Jonas Geirnaert, Belgium, country of citizenship, [0, 6]
+2 KASK, Ghent, located in the administrative territorial entity, [0]
+3 Workers Party, Belgium, country, [6]
+4 Flanders, Belgium, located in the administrative territorial entity, [10, 6]
+5 Flanders, Belgium, country, [10, 6]
+6 BASTA, Jonas Geirnaert, cast member, [8, 7]
+7 Belgium, Flanders, contains administrative territorial entity, [10, 6]
+------------------------
