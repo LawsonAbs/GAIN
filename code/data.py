@@ -320,95 +320,101 @@ class BERTDGLREDataset(IterableDataset):
                 # doc 中的内容只有如下四项，分别是 title, vertexSet, labels, sents
                 title, entity_list, labels, sentences = \
                     doc['title'], doc['vertexSet'], doc.get('labels', []), doc['sents'] 
-                Ls = [0]
+                Ls = [0] # Ls[i] 表示的就是第i条句子开始的绝对长度。直接以原始setence中的word为基准
                 L = 0
-                # step1. 遍历每个的 sentence 的长度，并将其放到 Ls中，同时累计总长度得到L
+                # step1. 遍历每个的 sentence 的长度，累计得到当前的总长度L， 并将其放到 Ls中。
                 for x in sentences: 
                     L += len(x)
                     Ls.append(L)
-                for j in range(len(entity_list)): # step2. 遍历每个entity
+                
+                # step2. 遍历每个entity
+                for j in range(len(entity_list)): 
                     for k in range(len(entity_list[j])): # 找出当前entity下的mention个数
-                        
-                        # 这两行代码应该是重复的，
+                                                
                         sent_id = int(entity_list[j][k]['sent_id']) # 找出当前这个mention 所在的sent_id ，但是如果一个mention
-                        entity_list[j][k]['sent_id'] = sent_id # 即使相同的mention，但是可能出现在句中的位置不同，所以这里放的是[实体_id][mention_id]['send_id'] = sent_id
+                        # 下面这行代码应该无用
+                        # entity_list[j][k]['sent_id'] = sent_id # 即使相同的mention，但是可能出现在句中的位置不同，所以这里放的是[实体_id][mention_id]['send_id'] = sent_id
 
-                        dl = Ls[sent_id]
-                        pos0, pos1 = entity_list[j][k]['pos']
-                        entity_list[j][k]['global_pos'] = (pos0 + dl, pos1 + dl)
-
+                        dl = Ls[sent_id]  # dl 是对应第 sent_id 个句子的长度
+                        mention_start, mention_end = entity_list[j][k]['pos'] # 得到这个mention 的 [start,end] 坐标
+                        entity_list[j][k]['global_pos'] = (mention_start + dl, mention_end + dl) # global_pos 计算的就是全局位置
+                
+                # step3. 遍历labels
                 # generate positive examples
                 train_triple = []
-                new_labels = []
+                new_labels = []  # 产生新的label标签
                 for label in labels:
-                    head, tail, relation, evidence = label['h'], label['t'], label['r'], label['evidence']
-                    assert (relation in rel2id), 'no such relation {} in rel2id'.format(relation)
-                    label['r'] = rel2id[relation]
-
-                    train_triple.append((head, tail))
-
-                    label['in_train'] = False
-
+                    head, tail, relation, evidence = label['h'], label['t'], label['r'], label['evidence'] # 从原始数据中取出对应的字段
+                    assert (relation in rel2id), 'no such relation {} in rel2id'.format(relation) # 判断是否有对应的relation
+                    label['r'] = rel2id[relation] # 将rel => id
+                    train_triple.append((head, tail)) # 记录正样本数据
+                    label['in_train'] = False  # 为什么这里初始化为False?
+                    
                     # record training set mention triples and mark it for dev and test set
                     for n1 in entity_list[head]:
                         for n2 in entity_list[tail]:
-                            mention_triple = (n1['name'], n2['name'], relation)
+                            mention_triple = (n1['name'], n2['name'], relation)  # 这相当于根据所有的mention都生成一个train example  => 这会生成很多个训练数据
                             if dataset_type == 'train':
                                 self.instance_in_train.add(mention_triple)
-                            else:
+                            else: # TODO ？？？
                                 if mention_triple in self.instance_in_train:
                                     label['in_train'] = True
                                     break
-
+                                       
                     new_labels.append(label)
 
-                # generate negative examples
+                # generate negative examples  => 其实负样本的选择也是很重要的，所以这里也是一个课题可以作为改进
                 na_triple = []
                 for j in range(len(entity_list)):
                     for k in range(len(entity_list)):
-                        if j != k and (j, k) not in train_triple:
+                        if j != k and (j, k) not in train_triple:  # 如果不在正样本数据中，则作为负样本使用
                             na_triple.append((j, k))
 
                 # generate document ids
-                words = []
+                words = [] # 取出sentence 中的所有单词
+                # a = []
                 for sentence in sentences:
-                    for word in sentence:
-                        words.append(word)
-
+                    words.extend(sentence)
+                    # for word in sentence:
+                    #     a.append(word)
+                # print(a)
+                print(words)
+                # bert_token, bert_starts, bert_subwords 用bert_xx 是为了表示要送给bert处理
+                # bert_starts[i] 表示第i个word 在bert_token 中的起始下标。因为有拆分情况，所以需要记录一下
                 bert_token, bert_starts, bert_subwords = bert.subword_tokenize_to_ids(words)
-
-                word_id = np.zeros((self.document_max_length,), dtype=np.int32)
-                pos_id = np.zeros((self.document_max_length,), dtype=np.int32)
-                ner_id = np.zeros((self.document_max_length,), dtype=np.int32)
+                # zeros() 函数会传入一个shape，即下面的(self.document_max_length,) 这里将传递给杜设置成document_max_length，就可以猜测是要对整个tokenizer之后的序列进行一个标注，否则没有必要搞这么个长度
+                word_id = np.zeros((self.document_max_length,), dtype=np.int32) 
+                pos_id = np.zeros((self.document_max_length,), dtype=np.int32)  # 这个改做pos2entityid 比较合理
+                ner_id = np.zeros((self.document_max_length,), dtype=np.int32) # 默认的初始值就代表这个不是NER
+                
+                # 这个改做叫pos2mention_id 更好
                 mention_id = np.zeros((self.document_max_length,), dtype=np.int32)
-                word_id[:] = bert_token[0]
+                word_id[:] = bert_token[0] # 其实就是 tokenizer处理后的 input_ids
 
-                entity2mention = defaultdict(list)
-                mention_idx = 1
-                already_exist = set()
-                for idx, vertex in enumerate(entity_list, 1):
-                    for v in vertex:
-
-                        sent_id, (pos0, pos1), ner_type = v['sent_id'], v['global_pos'], v['type']
-
-                        pos0 = bert_starts[pos0]
-                        pos1 = bert_starts[pos1] if pos1 < len(bert_starts) else 1024
-
+                entity2mention = defaultdict(list) # 记住每个entity 对应mention的id
+                mention_idx = 1 # 对mention的下标计数，注意是从1开始。 即统计一篇 doc 中的所有mention个数，所以是个全局变量
+                already_exist = set() # 记录两个
+                for idx, vertex in enumerate(entity_list, 1): # 对所有的entity遍历
+                    for v in vertex: # vertex 代表的是这个entity的所有 mention 集合
+                        sent_id, (pos0, pos1), ner_type = v['sent_id'], v['global_pos'], v['type']  # 注意这里取得是绝对位置
+                        pos0 = bert_starts[pos0] # 返回在tokenizer之后（原words在）位置pos0处的位置
+                        pos1 = bert_starts[pos1] if pos1 < len(bert_starts) else 1024 # TODO 这个值为啥选择1024？
+                        # 下面这两种if会存在吗？
                         if (pos0, pos1) in already_exist:
                             continue
 
                         if pos0 >= len(pos_id):
                             continue
-
-                        pos_id[pos0:pos1] = idx
-                        ner_id[pos0:pos1] = ner2id[ner_type]
-                        mention_id[pos0:pos1] = mention_idx
-                        entity2mention[idx].append(mention_idx)
-                        mention_idx += 1
+                        
+                        pos_id[pos0:pos1] = idx # 表示pos0 -> pos1 这个位置是第idx个实体（用的是idx下标）
+                        ner_id[pos0:pos1] = ner2id[ner_type]  # 标记整个位置的 ner_type 情况，标记成id。 ner_id[i] 表示成第i个位置是个ner，且这个ner的类型对应的id是 ner2id[ner_type]
+                        mention_id[pos0:pos1] = mention_idx # 记录从pos:pos1 这个位置是一个mention（用的是mention_idx下标），对应第mention_idx个mention
+                        entity2mention[idx].append(mention_idx)  
+                        mention_idx += 1  
                         already_exist.add((pos0, pos1))
                 replace_i = 0
-                idx = len(entity_list)
                 if entity2mention[idx] == []:
+                    idx = len(entity_list) # 这行代码放在这个位置，应该才ok 
                     entity2mention[idx].append(mention_idx)
                     while mention_id[replace_i] != 0:
                         replace_i += 1
@@ -417,19 +423,20 @@ class BERTDGLREDataset(IterableDataset):
                     ner_id[replace_i] = ner2id[vertex[0]['type']]
                     mention_idx += 1
 
-                new_Ls = [0]
+                new_Ls = [0] # 之前的Ls是按照原始sentence的分词搞的，接下来就要用基于bert tokenizer 之后的来搞
                 for ii in range(1, len(Ls)):
+                    # bert_starts[Ls[ii]] 找出对应 Ls[ii] 这个word 得到的token下标
                     new_Ls.append(bert_starts[Ls[ii]] if Ls[ii] < len(bert_starts) else len(bert_subwords))
                 Ls = new_Ls
 
                 # construct graph
-                graph = self.create_graph(Ls, mention_id, pos_id, entity2mention)
+                mention_graph = self.create_mention_graph(Ls, mention_id, pos_id, entity2mention)
 
                 # construct entity graph & path
                 entity_graph, path = self.create_entity_graph(Ls, pos_id, entity2mention)
 
                 assert pos_id.max() == len(entity_list)
-                assert mention_id.max() == graph.number_of_nodes() - 1
+                assert mention_id.max() == mention_graph.number_of_nodes() - 1
 
                 overlap = doc.get('overlap_entity_pair', [])
                 new_overlap = [tuple(item) for item in overlap]
@@ -444,7 +451,7 @@ class BERTDGLREDataset(IterableDataset):
                     'ner_id': ner_id,
                     'mention_id': mention_id,
                     'entity2mention': entity2mention,
-                    'graph': graph,
+                    'graph': mention_graph,
                     'entity_graph': entity_graph,
                     'path': path,
                     'overlap': new_overlap
@@ -464,26 +471,27 @@ class BERTDGLREDataset(IterableDataset):
     def __iter__(self):
         return iter(self.data)
 
-    def create_graph(self, Ls, mention_id, entity_id, entity2mention):
-
-        d = defaultdict(list)
-
+    # 这创建的是 mention graph
+    def create_mention_graph(self, Ls, mention_id, entity_id, entity2mention):
+        d = defaultdict(list) # 新建一个存在默认值的dict
         # add intra edges
         for _, mentions in entity2mention.items():
-            for i in range(len(mentions)):
-                for j in range(i + 1, len(mentions)):
-                    d[('node', 'intra', 'node')].append((mentions[i], mentions[j]))
-                    d[('node', 'intra', 'node')].append((mentions[j], mentions[i]))
-
-        if d[('node', 'intra', 'node')] == []:
+            for i in range(len(mentions)): # 构建相同 mention 之间的图
+                for j in range(i + 1, len(mentions)):                    
+                    d[('node', 'intra', 'node')].append((mentions[i], mentions[j])) # 用的是同一个 mentions，所以代表的是intra edges。 mentions[i] 代表第i个mention。这就说明第i个mention 和 第j个mention之间有边。
+                    d[('node', 'intra', 'node')].append((mentions[j], mentions[i])) # 相反，第j个mention和第i个mention之间也有边
+        # 特殊情况判断
+        if d[('node', 'intra', 'node')] == []: # 如果为空集
             d[('node', 'intra', 'node')].append((entity2mention[1][0], 0))
 
-        for i in range(1, len(Ls)):
+        # 下面这个获取 mention_entity_info 的步骤还需要再研究一下
+        for i in range(1, len(Ls)): # 从1开始是因为前面有 [CLS]。 这遍历的结果相当于从第i个sentence对应的token之后的起始下标
             tmp = dict()
-            for j in range(Ls[i - 1], Ls[i]):
-                if mention_id[j] != 0:
-                    tmp[mention_id[j]] = entity_id[j]
-            mention_entity_info = [(k, v) for k, v in tmp.items()]
+            for j in range(Ls[i - 1], Ls[i]): # 第i个sentence 的起始下标和终止下标
+                if mention_id[j] != 0: # 如果当前这个位置的token 是mention的一部分
+                    print(mention_id[j],"=>",entity_id[j])
+                    tmp[mention_id[j]] = entity_id[j]  # entity_id[j] 表示的是j这个位置对应的entity下标。这就相当于找出 mention => entity 之间的对应关系，即第mention_id[j] 个mention对应 第entity_id[j] 个entity
+            mention_entity_info = [(k, v) for k, v in tmp.items()] # TODO mention => entity。 这么写是不是有点儿复杂了？ 如果只想找出mention 序号到 entity 的关系， 应该不需要这么复杂的判断啊 
 
             # add self-loop & to-globle-node edges
             for m in range(len(mention_entity_info)):
@@ -491,14 +499,15 @@ class BERTDGLREDataset(IterableDataset):
                 # d[('node', 'loop', 'node')].append((mention_entity_info[m][0], mention_entity_info[m][0]))
 
                 # to global node
+                # 这里应该就是添加 mention => Document Node 的边
                 d[('node', 'global', 'node')].append((mention_entity_info[m][0], 0))
                 d[('node', 'global', 'node')].append((0, mention_entity_info[m][0]))
 
             # add inter edges
             for m in range(len(mention_entity_info)):
                 for n in range(m + 1, len(mention_entity_info)):
-                    if mention_entity_info[m][1] != mention_entity_info[n][1]:
-                        # inter edge
+                    if mention_entity_info[m][1] != mention_entity_info[n][1]: # [m][1], [n][1] 都是取第二个值，就是关注 entity
+                        # inter edge  => 就是 Inter-Entity Edge  指的就是同一实体不同mention之间需要相互连接                    
                         d[('node', 'inter', 'node')].append((mention_entity_info[m][0], mention_entity_info[n][0]))
                         d[('node', 'inter', 'node')].append((mention_entity_info[n][0], mention_entity_info[m][0]))
 
@@ -508,7 +517,6 @@ class BERTDGLREDataset(IterableDataset):
             d[('node', 'inter', 'node')].append((entity2mention[1][0], 0))
 
         graph = dgl.heterograph(d)
-
         return graph
 
     def create_entity_graph(self, Ls, entity_id, entity2mention):
