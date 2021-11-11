@@ -187,7 +187,7 @@ def train(opt):
                 total_loss = 0
                 start_time = time.time()
 
-        if epoch % opt.test_epoch == 0:
+        if epoch % opt.dev_period == 0:
             logging('-' * 89)
             eval_start_time = time.time()
             model.eval()
@@ -235,5 +235,5 @@ if __name__ == '__main__':
     # TODO 了解一下 __dict__ 属性
     # __dict__ 应该就是打印自己的属性
     print(json.dumps(opt.__dict__, indent=4)) 
-    opt.data_word_vec = "word2vec"  # ？？原作者这里直接用的是  word2vec，我简直是惊了，这种错误也能犯？
+    opt.data_word_vec = "word2vec"  # ？？原作者这里直接用的是  word2vec。 如果 use_model 使用的是Glove，那么就需要使用到这个参数
     train(opt)
