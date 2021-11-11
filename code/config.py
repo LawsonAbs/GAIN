@@ -71,7 +71,7 @@ def get_opt():
     parser.add_argument('--batch_size', type=int, default=1)
     parser.add_argument('--test_batch_size', type=int, default=1)
     parser.add_argument('--epoch', type=int, default=10)
-    parser.add_argument('--test_epoch', type=int, default=1)
+    parser.add_argument('--dev_period', type=int, default=1)
     parser.add_argument('--weight_decay', type=float, default=0.0001)
     parser.add_argument('--negativa_alpha', type=float, default=0.0)  # negative example nums v.s positive example num
     parser.add_argument('--log_step', type=int, default=50)
