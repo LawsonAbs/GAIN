@@ -262,6 +262,7 @@ class GAIN_BERT(nn.Module):
         rel_name_lists = ['intra', 'inter', 'global']
         # 有几层layer，就执行几次for 循环。 一般 config.gcn_layers = 2
         # 在构造RelGraphConvLayer 的时候，需要使用到的几个组件，所以就放到init()中了
+        # num_bases=len(rel_name_lists)，这个
         self.GCN_layers = nn.ModuleList([RelGraphConvLayer(self.gcn_dim, self.gcn_dim, rel_name_lists,
                                                            num_bases=len(rel_name_lists), activation=self.activation,
                                                            self_loop=True, dropout=self.config.dropout)
@@ -269,6 +270,7 @@ class GAIN_BERT(nn.Module):
 
         for i in self.GCN_layers:
             i.cuda() # 移入到GPU中
+        # TODO bank_size 为啥是这么计算的？ self.config.gcn_layers 表示的是gcn 的层数， +1 表示的是初始化的embedding维度。所以这里是 *(self.config.gcn_layers+1)。 这个可以在论文中的3.2下的公式(4)得出
         self.bank_size = self.gcn_dim * (self.config.gcn_layers + 1)
         self.dropout = nn.Dropout(self.config.dropout)
         
@@ -301,10 +303,12 @@ class GAIN_BERT(nn.Module):
         h_t_pairs: [batch_size, h_t_limit, 2]
         ht_pair_distance: [batch_size, h_t_limit]
         '''
-        input_ids = params['words'] # (batch_size,301) 这个input_ids 就是针对输入数据得到的input_ids
+        input_ids = params['words'] # (batch_size,max_length) 这个input_ids 就是针对输入数据得到的input_ids
         mask = params['mask']
         bsz, slen = input_ids.size()
-        # 先过bert.  encoder_outputs 是 last_hidden_states
+        
+        # GPU
+        # 先过bert.  encoder_outputs 是 last_hidden_states  
         encoder_outputs, sentence_cls = self.bert(input_ids=input_ids, attention_mask=mask)
         # encoder_outputs[mask == 0] = 0
 
@@ -321,36 +325,38 @@ class GAIN_BERT(nn.Module):
         # sentence_cls: [batch_size, bert_hid+type_size+id_size]
 
         graphs = params['graphs'] # list of <dgl.heterograph.DGLHeteroGraph>
-        
-        # 将graphs 放到gpu中
+        new_graphs = []
+        # 将graphs 放到gpu中 # 将这个操作放到model调用之前去做
         for graph in graphs:
-            graph.to(torch.device('cuda:0'))
-        mention_id = params['mention_id'] # TODO 注意一下这个的表示
-        features = None # 做什么用的？
+            graph = graph.to(torch.device('cuda:0'))
+            new_graphs.append(graph)
+        graphs = new_graphs
+        mention_id = params['mention_id']  # tokenizer 之后得到的token，在每个位置是否属于mention 的下标
+        features = None # 做什么用的？ => 一个batch中的所有doc的所有mention 拼接在一起得到的表示
 
-        for i in range(len(graphs)): # batch是多少，就有几个图。 针对每篇文档建一个针对性的图
+        for i in range(len(graphs)): # batch是多少，就有几个图。 针对每篇文档建一个图
             encoder_output = encoder_outputs[i]  # [slen, bert_hid]  拿到每篇doc 中每个token的 embedding表示
             mention_num = torch.max(mention_id[i]) # 这个参数的含义是：这个doc中 vertexSet中mention 的个数
             mention_index = get_cuda(
                 (torch.arange(mention_num) + 1).unsqueeze(1).expand(-1, slen))  # [mention_num, slen]
             mentions = mention_id[i].unsqueeze(0).expand(mention_num, -1)  # [mention_num, slen]
-            select_metrix = (mention_index == mentions).float()  # [mention_num, slen]
-            # average word -> mention
+            select_metrix = (mention_index == mentions).float()  # [mention_num, slen] select_metrix[i][j] =1代表的就是第i个mention在位置j出现过，否则没有出现。select_metrix.size(1) 就是doc 的长度 
+            # average word -> mention  找出每行有几个数
             word_total_numbers = torch.sum(select_metrix, dim=-1).unsqueeze(-1).expand(-1, slen)  # [mention_num, slen]
             select_metrix = torch.where(word_total_numbers > 0, select_metrix / word_total_numbers, select_metrix)
-
+            # 根据select_metrix 和 encoder_output 做乘法，得到实体的表示
             x = torch.mm(select_metrix, encoder_output)  # [mention_num, bert_hid]
-            x = torch.cat((sentence_cls[i].unsqueeze(0), x), dim=0)
+            x = torch.cat((sentence_cls[i].unsqueeze(0), x), dim=0) # 拼接整个句子的表示
 
             if features is None:
                 features = x
             else:
                 features = torch.cat((features, x), dim=0)
-        # graph_big ：<class 'dgl.heterograph.DGLHeteroGraph'>
+        # graph_big ：<class 'dgl.heterograph.DGLHeteroGraph'> 将一批graph(graphs)一起处理
         graph_big = dgl.batch(graphs) # 将batch_hetero => batch
-        graph_big = graph_big.to(torch.device('cuda:0')) # 将这个graph_big 
+        # graph_big = graph_big.to(torch.device('cuda:0')) # 将这个graph_big 
         output_features = [features]
-
+        # GPU
         for GCN_layer in self.GCN_layers:
             features = GCN_layer(graph_big, {"node": features})["node"]  # [total_mention_nums, gcn_dim]
             output_features.append(features)
@@ -361,9 +367,9 @@ class GAIN_BERT(nn.Module):
 
         # mention -> entity  entity2mention_table 这个是一篇doc中 entity的个数 和 mention 的形成的矩阵
         entity2mention_table = params['entity2mention_table']  # list of [entity_num, mention_num]
-        entity_num = torch.max(params['entity_id']) # 选择当前batch 中最大数目的entity 作为 entity_num
-        entity_bank = get_cuda(torch.Tensor(bsz, entity_num, self.bank_size)) # 得到一个tensor，其size为 [bsz,entity_num,self.bank_size]  => 学习一下self.bank_size 这个参数
-        global_info = get_cuda(torch.Tensor(bsz, self.bank_size)) # global_info 是干什么的？
+        entity_num = torch.max(params['entity_id']) # 选择当前batch 中最大数目的entity 作为 entity_num （在dev_44.json 中，其值为31）
+        entity_bank = get_cuda(torch.Tensor(bsz, entity_num, self.bank_size)) # 得到一个tensor
+        global_info = get_cuda(torch.Tensor(bsz, self.bank_size)) # global_info 是干什么的？ => 获取整个文档的信息
 
         cur_idx = 0
         entity_graph_feature = None
@@ -387,19 +393,22 @@ class GAIN_BERT(nn.Module):
 
         h_t_pairs = params['h_t_pairs']
         h_t_pairs = h_t_pairs + (h_t_pairs == 0).long() - 1  # [batch_size, h_t_limit, 2]
-        h_t_limit = h_t_pairs.size(1)  # 这个参数是什么意思？
+        h_t_limit = h_t_pairs.size(1)  # TODO 这个参数是什么意思？
 
         # [batch_size, h_t_limit, bank_size]
+        # TODO 找出 h_entity/t_entity 的index 过程 => 没看懂
         h_entity_index = h_t_pairs[:, :, 0].unsqueeze(-1).expand(-1, -1, self.bank_size)
         t_entity_index = h_t_pairs[:, :, 1].unsqueeze(-1).expand(-1, -1, self.bank_size)
-
+        # entity_bank = ([batch_size, 31, 2424])
         # [batch_size, h_t_limit, bank_size]
+        # 这个感觉就是聚合同一实体的mention，然后得到每个entity 的表示，称作是h_entity/t_entity
         h_entity = torch.gather(input=entity_bank, dim=1, index=h_entity_index)
         t_entity = torch.gather(input=entity_bank, dim=1, index=t_entity_index)
 
         global_info = global_info.unsqueeze(1).expand(-1, h_t_limit, -1)
 
-        entity_graphs = params['entity_graphs'] # 为啥还要从 params 中抽取出图？？
+        # 为啥还要从 params 中抽取出图？？ => 因为这里得到的是entity_graph， 还需要在它的基础上进行一个路径推理得到最后的结果
+        entity_graphs = params['entity_graphs'] 
         entity_graph_big = dgl.batch(entity_graphs)
         entity_graph_big = entity_graph_big.to(torch.device('cuda:0'))
         self.edge_layer(entity_graph_big, entity_graph_feature)
@@ -408,13 +417,15 @@ class GAIN_BERT(nn.Module):
         path_info = get_cuda(torch.zeros((bsz, h_t_limit, self.gcn_dim * 4)))
         relation_mask = params['relation_mask']
         path_table = params['path_table']
+
+        # 下面这个操作很慢，是整个过程较为耗时的部分
         for i in range(len(entity_graphs)):
             path_t = path_table[i]
             for j in range(h_t_limit):
                 if relation_mask is not None and relation_mask[i, j].item() == 0:
                     break
 
-                h = h_t_pairs[i, j, 0].item()
+                h = h_t_pairs[i, j, 0].item() # [batch_size,930,2]
                 t = h_t_pairs[i, j, 1].item()
                 # for evaluate
                 if relation_mask is None and h == 0 and t == 0:
@@ -461,7 +472,7 @@ class GAIN_BERT(nn.Module):
                 self.path_info_mapping(path_info)
             )
         )
-
+        # 下面这个部分对应的就是 3.4 Classification Module 中的内容，将拼接得到tensor 做一个predict操作
         predictions = self.predict(torch.cat(
             (h_entity, t_entity, torch.abs(h_entity - t_entity), torch.mul(h_entity, t_entity), global_info, path_info),
             dim=-1))
@@ -548,7 +559,8 @@ class RelGraphConvLayer(nn.Module):
     rel_names : list[str]
         Relation names.
 
-    # 这里的bases 是啥意思？
+    # TODO 这里的bases 是啥意思？
+    # 
     num_bases : int, optional
         Number of bases. If is none, use number of relations. Default: None.
     weight : bool, optional
@@ -562,7 +574,7 @@ class RelGraphConvLayer(nn.Module):
     dropout : float, optional
         Dropout rate. Default: 0.0
     """
-    # 在 构造函数中对各个参数进行初始化
+    # 构造函数中对各个参数进行初始化
     def __init__(self,
                  in_feat,
                  out_feat,
@@ -583,12 +595,13 @@ class RelGraphConvLayer(nn.Module):
         self.activation = activation
         self.self_loop = self_loop  
         # dglnn.HeteroGraphConv  是一个在异质图上计算卷积的通用模块
-        self.conv = dglnn.HeteroGraphConv({
+        # 这个定义的方式有点儿像是对 relation 进行操作。
+        self.conv = dglnn.HeteroGraphConv({ 
             rel: dglnn.GraphConv(in_feat, out_feat, norm='right', weight=False, bias=False)
             for rel in rel_names
         })
-
         self.use_weight = weight
+        # TODO 下面这个逻辑关系还不是很懂
         self.use_basis = num_bases < len(self.rel_names) and weight
         if self.use_weight:
             if self.use_basis:
@@ -624,14 +637,14 @@ class RelGraphConvLayer(nn.Module):
         dict[str, torch.Tensor]
             New node features for each node type.
         """
-        g = g.local_var()
+        g = g.local_var() ## TODO ？
         if self.use_weight:
-            weight = self.basis() if self.use_basis else self.weight
+            weight = self.basis() if self.use_basis else self.weight # TODO？
             wdict = {self.rel_names[i]: {'weight': w.squeeze(0)}
                      for i, w in enumerate(torch.split(weight, 1, dim=0))}
         else:
             wdict = {}
-        hs = self.conv(g, inputs, mod_kwargs=wdict)
+        hs = self.conv(g, inputs, mod_kwargs=wdict) # 
 
         def _apply(ntype, h):
             if self.self_loop:
@@ -647,7 +660,6 @@ class RelGraphConvLayer(nn.Module):
 
 '''
 这个类同上面这个类的区别是什么？
-
 '''
 class RelEdgeLayer(nn.Module):
     def __init__(self,
@@ -735,9 +747,9 @@ class Bert():
                 represent tokens, which is necessary in sequence
                 labeling.
         """
-        subwords = list(map(self.tokenizer.tokenize, tokens))
-        subword_lengths = list(map(len, subwords))
-        subwords = [self.CLS] + list(self.flatten(subwords))[:509] + [self.SEP]
+        subwords = list(map(self.tokenizer.tokenize, tokens)) # 对tokens中的token 执行self.tokenizer.tokenize 操作，生成的结果作为一个list
+        subword_lengths = list(map(len, subwords)) # 求出tokenizer 之后得到的总共的subwords的长度
+        subwords = [self.CLS] + list(self.flatten(subwords))[:509] + [self.SEP] # 为了防止超过512，所以这里取到509
         token_start_idxs = 1 + np.cumsum([0] + subword_lengths[:-1])
         token_start_idxs[token_start_idxs > 509] = 512
         return subwords, token_start_idxs
@@ -751,14 +763,16 @@ class Bert():
         Returns
         -------
         A tuple consisting of:
-            - A list of subword IDs, including IDs of the special
+            - subword_ids: A list of subword IDs, including IDs of the special
                 symbols (CLS and SEP) required by Bert.
-            - A mask indicating padding tokens.
-            - An array of indices into the list of subwords. See
+            - token_start_idxs:An array of indices into the list of subwords. See
                 doc of subword_tokenize.
+            - subwords: A list of subword
+            - （暂时忽略）A mask indicating padding tokens.            
         """
         subwords, token_start_idxs = self.subword_tokenize(tokens)
         subword_ids, mask = self.convert_tokens_to_ids(subwords)
+        # 为啥要将subword_ids 转换成numpy格式？
         return subword_ids.numpy(), token_start_idxs, subwords
 
     def segment_ids(self, segment1_len, segment2_len):
