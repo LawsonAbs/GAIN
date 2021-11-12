@@ -356,7 +356,7 @@ class BERTDGLREDataset(IterableDataset):
                             mention_triple = (n1['name'], n2['name'], relation)  # 这相当于根据所有的mention都生成一个train example  => 这会生成很多个训练数据
                             if dataset_type == 'train':
                                 self.instance_in_train.add(mention_triple)
-                            else: # TODO ？？？
+                            else: # 因为这里存在既加载train，又加载dev/test。所以为了判断是否train中的标签会出现dev中，所以就用来这个标记。
                                 if mention_triple in self.instance_in_train:
                                     label['in_train'] = True
                                     break
@@ -378,7 +378,7 @@ class BERTDGLREDataset(IterableDataset):
                     # for word in sentence:
                     #     a.append(word)
                 # print(a)
-                print(words)
+                # print(words)
                 # bert_token, bert_starts, bert_subwords 用bert_xx 是为了表示要送给bert处理
                 # bert_starts[i] 表示第i个word 在bert_token 中的起始下标。因为有拆分情况，所以需要记录一下
                 bert_token, bert_starts, bert_subwords = bert.subword_tokenize_to_ids(words)
@@ -437,11 +437,12 @@ class BERTDGLREDataset(IterableDataset):
 
                 assert pos_id.max() == len(entity_list)
                 assert mention_id.max() == mention_graph.number_of_nodes() - 1
-
+                # 没有明白这个 overlap 的作用是什么？
                 overlap = doc.get('overlap_entity_pair', [])
                 new_overlap = [tuple(item) for item in overlap]
 
-                self.data.append({
+                self.data.append(
+                    {
                     'title': title,
                     'entities': entity_list,
                     'labels': new_labels,
@@ -455,7 +456,8 @@ class BERTDGLREDataset(IterableDataset):
                     'entity_graph': entity_graph,
                     'path': path,
                     'overlap': new_overlap
-                })
+                    }
+                )
 
             # save data
             with open(file=save_file, mode='wb') as fw:
@@ -473,23 +475,23 @@ class BERTDGLREDataset(IterableDataset):
 
     # 这创建的是 mention graph
     def create_mention_graph(self, Ls, mention_id, entity_id, entity2mention):
-        d = defaultdict(list) # 新建一个存在默认值的dict
+        data_dict = defaultdict(list) # 新建一个存在默认值的dict，这个值最后就是用于创建图的
         # add intra edges
         for _, mentions in entity2mention.items():
             for i in range(len(mentions)): # 构建相同 mention 之间的图
                 for j in range(i + 1, len(mentions)):                    
-                    d[('node', 'intra', 'node')].append((mentions[i], mentions[j])) # 用的是同一个 mentions，所以代表的是intra edges。 mentions[i] 代表第i个mention。这就说明第i个mention 和 第j个mention之间有边。
-                    d[('node', 'intra', 'node')].append((mentions[j], mentions[i])) # 相反，第j个mention和第i个mention之间也有边
+                    data_dict[('node', 'intra', 'node')].append((mentions[i], mentions[j])) # 用的是同一个 mentions，所以代表的是intra edges。 mentions[i] 代表第i个mention。这就说明第i个mention 和 第j个mention之间有边。
+                    data_dict[('node', 'intra', 'node')].append((mentions[j], mentions[i])) # 相反，第j个mention和第i个mention之间也有边
         # 特殊情况判断
-        if d[('node', 'intra', 'node')] == []: # 如果为空集
-            d[('node', 'intra', 'node')].append((entity2mention[1][0], 0))
+        if data_dict[('node', 'intra', 'node')] == []: # 如果为空集
+            data_dict[('node', 'intra', 'node')].append((entity2mention[1][0], 0))
 
         # 下面这个获取 mention_entity_info 的步骤还需要再研究一下
         for i in range(1, len(Ls)): # 从1开始是因为前面有 [CLS]。 这遍历的结果相当于从第i个sentence对应的token之后的起始下标
             tmp = dict()
             for j in range(Ls[i - 1], Ls[i]): # 第i个sentence 的起始下标和终止下标
                 if mention_id[j] != 0: # 如果当前这个位置的token 是mention的一部分
-                    print(mention_id[j],"=>",entity_id[j])
+                    # print(mention_id[j],"=>",entity_id[j])
                     tmp[mention_id[j]] = entity_id[j]  # entity_id[j] 表示的是j这个位置对应的entity下标。这就相当于找出 mention => entity 之间的对应关系，即第mention_id[j] 个mention对应 第entity_id[j] 个entity
             mention_entity_info = [(k, v) for k, v in tmp.items()] # TODO mention => entity。 这么写是不是有点儿复杂了？ 如果只想找出mention 序号到 entity 的关系， 应该不需要这么复杂的判断啊 
 
@@ -500,66 +502,73 @@ class BERTDGLREDataset(IterableDataset):
 
                 # to global node
                 # 这里应该就是添加 mention => Document Node 的边
-                d[('node', 'global', 'node')].append((mention_entity_info[m][0], 0))
-                d[('node', 'global', 'node')].append((0, mention_entity_info[m][0]))
+                data_dict[('node', 'global', 'node')].append((mention_entity_info[m][0], 0))
+                data_dict[('node', 'global', 'node')].append((0, mention_entity_info[m][0]))
 
             # add inter edges
             for m in range(len(mention_entity_info)):
                 for n in range(m + 1, len(mention_entity_info)):
                     if mention_entity_info[m][1] != mention_entity_info[n][1]: # [m][1], [n][1] 都是取第二个值，就是关注 entity
                         # inter edge  => 就是 Inter-Entity Edge  指的就是同一实体不同mention之间需要相互连接                    
-                        d[('node', 'inter', 'node')].append((mention_entity_info[m][0], mention_entity_info[n][0]))
-                        d[('node', 'inter', 'node')].append((mention_entity_info[n][0], mention_entity_info[m][0]))
+                        data_dict[('node', 'inter', 'node')].append((mention_entity_info[m][0], mention_entity_info[n][0]))
+                        data_dict[('node', 'inter', 'node')].append((mention_entity_info[n][0], mention_entity_info[m][0]))
 
         # add self-loop for global node
         # d[('node', 'loop', 'node')].append((0, 0))
-        if d[('node', 'inter', 'node')] == []:
-            d[('node', 'inter', 'node')].append((entity2mention[1][0], 0))
+        if data_dict[('node', 'inter', 'node')] == []:
+            data_dict[('node', 'inter', 'node')].append((entity2mention[1][0], 0))
 
-        graph = dgl.heterograph(d)
+        graph = dgl.heterograph(data_dict)
         return graph
 
-    def create_entity_graph(self, Ls, entity_id, entity2mention):
 
+    # Entity level 的图之间的边是怎么构建的？ =>  合并所有实体间的边，这些边连接相同的两个mention
+    # TODO 这里的建边过程是否还可以值得优化一下？
+    def create_entity_graph(self, Ls, entity_id, entity2mention):
+        # 新建一个空图
         graph = dgl.DGLGraph()
-        graph.add_nodes(entity_id.max())
+        graph.add_nodes(entity_id.max()) # 有多少个实体，节点就是多少。 先把节点数表示出来，但是这个节点的具体特征留到后面再做处理
 
         d = defaultdict(set)
 
         for i in range(1, len(Ls)):
-            tmp = set()
+            tmp = set() # 判断当前 sentence 中有几个实体，并使用set记录它们的id
             for j in range(Ls[i - 1], Ls[i]):
                 if entity_id[j] != 0:
                     tmp.add(entity_id[j])
-            tmp = list(tmp)
-            for ii in range(len(tmp)):
+            tmp = list(tmp)  
+            for ii in range(len(tmp)): # 这两个for循环是用来干什么的？=> 同一个sentence之间的实体
                 for jj in range(ii + 1, len(tmp)):
-                    d[tmp[ii] - 1].add(tmp[jj] - 1)
+                    d[tmp[ii] - 1].add(tmp[jj] - 1) # 建双向边
                     d[tmp[jj] - 1].add(tmp[ii] - 1)
-        a = []
+        
+        # 将d拆分，形成一一对应的数组，然后交由后面的代码处理
+        a = [] 
         b = []
         for k, v in d.items():
             for vv in v:
                 a.append(k)
                 b.append(vv)
-        graph.add_edges(a, b)
-
+        graph.add_edges(a, b) # 为图添加边的信息
+        
+        # 定义一个path，用于reasoning mechanism。 下面这个代码的逻辑就是：找出path[(i+1,j+1)] 会经过哪些节点（集合c）。
         path = dict()
         for i in range(0, graph.number_of_nodes()):
             for j in range(i + 1, graph.number_of_nodes()):
-                a = set(graph.successors(i).numpy())
-                b = set(graph.successors(j).numpy())
-                c = [val + 1 for val in list(a & b)]
-                path[(i + 1, j + 1)] = c
+                a = set(graph.successors(i).numpy()) # 找出节点i的相邻节点
+                b = set(graph.successors(j).numpy()) 
+                c = [val + 1 for val in list(a & b)] # a&b 求出集合的交集
+                path[(i + 1, j + 1)] = c # 这里为什么i+1？
 
         return graph, path
 
 
 class DGLREDataloader(DataLoader):
-
-    def __init__(self, dataset, batch_size, shuffle=False, h_t_limit_per_batch=300, h_t_limit=1722, relation_num=97,
-                 max_length=512, negativa_alpha=0.0, dataset_type='train'):
-        super(DGLREDataloader, self).__init__(dataset, batch_size=batch_size)
+    # 使用num_workers 加速数据的准备过程
+    # 这个 h_t_limit_per_batch 是什么意思？
+    # h_t_limit 又是啥？
+    def __init__(self, dataset, batch_size, shuffle=False, h_t_limit_per_batch=300, h_t_limit=1722, relation_num=97,max_length=512, negativa_alpha=0.0, dataset_type='train'):
+        super(DGLREDataloader, self).__init__(dataset, batch_size=batch_size) # 初始化 DataLoader 用多线程
         self.shuffle = shuffle
         self.length = len(self.dataset)
         self.max_length = max_length
@@ -581,7 +590,7 @@ class DGLREDataloader(DataLoader):
         self.dis2idx[256:] = 9
         self.dis_size = 20
 
-        self.order = list(range(self.length))
+        self.order = list(range(self.length))        
 
     def __iter__(self):
         # shuffle
@@ -590,34 +599,34 @@ class DGLREDataloader(DataLoader):
             self.data = [self.dataset[idx] for idx in self.order]
         else:
             self.data = self.dataset
-        batch_num = math.ceil(self.length / self.batch_size)
+        batch_num = math.ceil(self.length / self.batch_size)  # 计算按照当前的batch_size设置，会有多少个batch？
+        # 根据当前的idx，返回每个batch需要的数据
         self.batches = [self.data[idx * self.batch_size: min(self.length, (idx + 1) * self.batch_size)]
                         for idx in range(0, batch_num)]
         self.batches_order = [self.order[idx * self.batch_size: min(self.length, (idx + 1) * self.batch_size)]
-                              for idx in range(0, batch_num)]
-
-        # begin
-        context_word_ids = torch.LongTensor(self.batch_size, self.max_length).cpu()
-        context_pos_ids = torch.LongTensor(self.batch_size, self.max_length).cpu()
-        context_ner_ids = torch.LongTensor(self.batch_size, self.max_length).cpu()
-        context_mention_ids = torch.LongTensor(self.batch_size, self.max_length).cpu()
-        context_word_mask = torch.LongTensor(self.batch_size, self.max_length).cpu()
-        context_word_length = torch.LongTensor(self.batch_size).cpu()
-        ht_pairs = torch.LongTensor(self.batch_size, self.h_t_limit, 2).cpu()
-        relation_multi_label = torch.Tensor(self.batch_size, self.h_t_limit, self.relation_num).cpu()
-        relation_mask = torch.Tensor(self.batch_size, self.h_t_limit).cpu()
-        relation_label = torch.LongTensor(self.batch_size, self.h_t_limit).cpu()
-        ht_pair_distance = torch.LongTensor(self.batch_size, self.h_t_limit).cpu()
-
+                              for idx in range(0, batch_num)] # 取出batch对应 的 order
+        
+        # 查看每个小 batch 里面
         for idx, minibatch in enumerate(self.batches):
-            cur_bsz = len(minibatch)
-
-            for mapping in [context_word_ids, context_pos_ids, context_ner_ids, context_mention_ids,
-                            context_word_mask, context_word_length,
-                            ht_pairs, ht_pair_distance, relation_multi_label, relation_mask, relation_label]:
-                if mapping is not None:
-                    mapping.zero_()
-
+            cur_bsz = len(minibatch) # 因为每个batch 不一定是整除的，所以这里先计算一下当前batch 中的个数
+            # 这个操作？？ => 让tensor 变成0 tensor。 那么下面这个操作是否是多余的？我直接在上面生成的时候直接使用zeros()怎么样？
+            # for mapping in [context_word_ids, context_pos_ids, context_ner_ids, context_mention_ids,
+            #                 context_word_mask, context_word_length,
+            #                 ht_pairs, ht_pair_distance, relation_multi_label, relation_mask, relation_label]:
+            #     if mapping is not None:
+            #         mapping.zero_()
+            # 原代码是将如下声明 tensor 的代码放到for循环的外侧的，我将其放到内测，同时取消上面这个for 循环
+            context_word_ids = torch.zeros(self.batch_size, self.max_length,dtype=torch.long).cpu()
+            context_pos_ids = torch.zeros(self.batch_size, self.max_length,dtype=torch.long).cpu()
+            context_ner_ids = torch.zeros(self.batch_size, self.max_length,dtype=torch.long).cpu()
+            context_mention_ids = torch.zeros(self.batch_size, self.max_length,dtype=torch.long).cpu()
+            context_word_mask = torch.zeros(self.batch_size, self.max_length,dtype=torch.long).cpu()
+            context_word_length = torch.zeros(self.batch_size,dtype=torch.long).cpu()
+            ht_pairs = torch.zeros(cur_bsz, self.h_t_limit, 2,dtype=torch.long).cpu()
+            ht_pair_distance = torch.zeros(self.batch_size, self.h_t_limit,dtype=torch.long).cpu()
+            relation_multi_label = torch.zeros(self.batch_size, self.h_t_limit, self.relation_num,dtype=torch.long).cpu()
+            relation_label = torch.zeros(self.batch_size, self.h_t_limit,dtype=torch.long).cpu()
+            relation_mask = torch.zeros(self.batch_size, self.h_t_limit,dtype=torch.long).cpu() # 不理解这里的realtion_mask 的作用
             relation_label.fill_(IGNORE_INDEX)
 
             max_h_t_cnt = 0
@@ -625,32 +634,32 @@ class DGLREDataloader(DataLoader):
             label_list = []
             L_vertex = []
             titles = []
-            indexes = []
+            indexes = [] # TODO ?
             graph_list = []
             entity_graph_list = []
-            entity2mention_table = []
+            entity2mention_table = [] # 这个是什么？
             path_table = []
             overlaps = []
-
+            # 对这个batch 中的数据进行处理
             for i, example in enumerate(minibatch):
                 title, entities, labels, na_triple, word_id, pos_id, ner_id, mention_id, entity2mention, graph, entity_graph, path = \
                     example['title'], example['entities'], example['labels'], example['na_triple'], \
                     example['word_id'], example['pos_id'], example['ner_id'], example['mention_id'], example[
                         'entity2mention'], example['graph'], example['entity_graph'], example['path']
-                graph_list.append(graph)
+                graph_list.append(graph) # 整个batch 的图得放到一个list 中
                 entity_graph_list.append(entity_graph)
                 path_table.append(path)
                 overlaps.append(example['overlap'])
-
+                # entity2mention_t 是个矩阵的形式，为啥要多加1?
                 entity2mention_t = get_cuda(torch.zeros((pos_id.max() + 1, mention_id.max() + 1)))
-                for e, ms in entity2mention.items():
+                for e, ms in entity2mention.items(): # entity2mention 是个dict。 这两个for循环是为了构建一个邻接矩阵，将entity2mention 转换成一个邻接矩阵
                     for m in ms:
                         entity2mention_t[e, m] = 1
                 entity2mention_table.append(entity2mention_t)
 
-                L = len(entities)
+                L = len(entities)  # 当前这篇doc 中entity 的数量
                 word_num = word_id.shape[0]
-
+                # 将word_id 的值放到context_word_id[i,:word_num] 中。 这里的 :word_num 是有点儿多余
                 context_word_ids[i, :word_num].copy_(torch.from_numpy(word_id))
                 context_pos_ids[i, :word_num].copy_(torch.from_numpy(pos_id))
                 context_ner_ids[i, :word_num].copy_(torch.from_numpy(ner_id))
@@ -662,7 +671,7 @@ class DGLREDataloader(DataLoader):
                     head, tail, relation, intrain, evidence = \
                         label['h'], label['t'], label['r'], label['in_train'], label['evidence']
                     idx2label[(head, tail)].append(relation)
-                    label_set[(head, tail, relation)] = intrain
+                    label_set[(head, tail, relation)] = intrain # 这个intrain 是判断当前这条样例是否出现在train中的标志
 
                 label_list.append(label_set)
 
@@ -707,23 +716,23 @@ class DGLREDataloader(DataLoader):
 
                         max_h_t_cnt = max(max_h_t_cnt, len(train_tripe) + lower_bound)
                 else:
-                    j = 0
-                    for h_idx in range(L):
+                    j = 0 
+                    for h_idx in range(L): # 因为要判断所有的entity，所以用的是双重for循环
                         for t_idx in range(L):
-                            if h_idx != t_idx:
-                                hlist, tlist = entities[h_idx], entities[t_idx]
-                                ht_pairs[i, j, :] = torch.Tensor([h_idx + 1, t_idx + 1])
-
+                            if h_idx != t_idx: # 这里判断是否赋值 ht_pairs 的条件只是 h_idx 和 t_idx 的值的比较
+                                hlist, tlist = entities[h_idx], entities[t_idx] # 分别获取每个实体下的所有mention 信息
+                                # TODO ht_pairs 是什么意思？  +1 是因为？ => 难道就只是想看h_entity 和 tail_entity 之间能否组成一对？所以就叫ht_pair?
+                                ht_pairs[i, j, :] = torch.Tensor([h_idx + 1, t_idx + 1]) 
                                 relation_mask[i, j] = 1
-
+                                # 这里只取hlist[0][x][x] 中的[0] 是为何？
                                 delta_dis = hlist[0]['global_pos'][0] - tlist[0]['global_pos'][0]
                                 if delta_dis < 0:
                                     ht_pair_distance[i, j] = -int(self.dis2idx[-delta_dis]) + self.dis_size // 2
                                 else:
                                     ht_pair_distance[i, j] = int(self.dis2idx[delta_dis]) + self.dis_size // 2
 
-                                j += 1
-
+                                j += 1 # 只有组成一对之后，j++
+                    # 找出最大的一个 h_t_cnt， 这个 max_h_t_cnt 的最大值是930=31*31-31
                     max_h_t_cnt = max(max_h_t_cnt, j)
                     L_vertex.append(L)
                     titles.append(title)
