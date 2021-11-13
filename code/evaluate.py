@@ -46,7 +46,7 @@ def eval(model, dataloader, modelname, id2rel, input_theta=-1, output=False, is_
                                 entity_graphs=d['entity_graphs'],
                                 ht_pair_distance=d['ht_pair_distance']
                                 )
-
+            
             predict_re = torch.sigmoid(predictions)
         # 这个 930 是怎么来的？
         predict_re = predict_re.data.cpu().numpy() # size = (batch_size,930,97)
@@ -70,13 +70,12 @@ def eval(model, dataloader, modelname, id2rel, input_theta=-1, output=False, is_
                 for t_idx in range(L):
                     if h_idx != t_idx:
                         for r in range(1, relation_num):
-                            rel_ins = (h_idx, t_idx, r) # 组装一个rel
+                            rel_ins = (h_idx, t_idx, r) # 组装成一个rel
                             intrain = label.get(rel_ins, False)  # 判断rel_ins是否在 train 中，如果不在，取False；如果在，取对应值
                             # TODO 下面这个逻辑不懂
                             if (ours and (h_idx, t_idx) in overlap) or not ours:
                                 dev_result.append((rel_ins in label, float(predict_re[i, j, r]), intrain,
                                                     title, id2rel[r], index, h_idx, t_idx, r))
-
                         j += 1
 
     dev_result.sort(key=lambda x: x[1], reverse=True)
@@ -87,7 +86,7 @@ def eval(model, dataloader, modelname, id2rel, input_theta=-1, output=False, is_
             if item[0]:
                 total_recall += 1
 
-    # 下面是为了计算单纯的 f1 情况
+    # 计算验证集中所有数据的 f1 情况
     pr_x = []
     pr_y = []
     correct = 0
@@ -115,7 +114,7 @@ def eval(model, dataloader, modelname, id2rel, input_theta=-1, output=False, is_
         input_theta = theta
 
     auc = sklearn.metrics.auc(x=pr_x, y=pr_y)
-    # 这里的输出格式针对情况
+    # 这里针对不同情况做输出
     if not is_test: # 不在test
         logging('ALL  : Theta {:3.4f} | F1 {:3.4f} | AUC {:3.4f}'.format(theta, f1, auc))
     else: # 在test
@@ -131,7 +130,7 @@ def eval(model, dataloader, modelname, id2rel, input_theta=-1, output=False, is_
         json.dump(output, open(test_prefix + "_index.json", "w"))
 
 
-    # 下面这部分是为了计算 ignore train data 中的样例的效果
+    # 计算 ignore train data 后的验证集效果
     pr_x = []
     pr_y = []
     correct = correct_in_train = 0
@@ -219,13 +218,13 @@ if __name__ == '__main__':
     model.eval()
 
     f1, auc, pr_x, pr_y ,dev_theta = eval(model, 
-                                dev_loader,
-                                model_name,
-                                id2rel=id2rel,
-                                input_theta=opt.input_theta,
-                                output=True,
-                                test_prefix='dev',
-                                is_test=True,
-                                ours=False # ??
-                                )
+                                        dev_loader,
+                                        model_name,
+                                        id2rel=id2rel,
+                                        input_theta=opt.input_theta,
+                                        output=True,
+                                        test_prefix='dev',
+                                        is_test=True,
+                                        ours=False # ??
+                                        )
     print('eval finished')
