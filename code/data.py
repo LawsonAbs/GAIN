@@ -527,8 +527,8 @@ class BERTDGLREDataset(IterableDataset):
     def create_entity_graph(self, Ls, entity_id, entity2mention):
         # 新建一个空图
         graph = dgl.DGLGraph()
-        graph.add_nodes(entity_id.max()) # 有多少个实体，节点就是多少。 先把节点数表示出来，但是这个节点的具体特征留到后面再做处理
-
+        # graph 中的节点编号是 [0,entity_id.max()-1]
+        graph.add_nodes(entity_id.max()) # 有多少个实体，节点就是多少。 先把节点数表示出来，但是这些节点的具体特征留到后面再做处理
         d = defaultdict(set)
 
         for i in range(1, len(Ls)):
@@ -537,12 +537,12 @@ class BERTDGLREDataset(IterableDataset):
                 if entity_id[j] != 0:
                     tmp.add(entity_id[j])
             tmp = list(tmp)  
-            for ii in range(len(tmp)): # 这两个for循环是用来干什么的？=> 同一个sentence之间的实体
+            for ii in range(len(tmp)): # 这两个for循环是用来干什么的？=> 在同一个sentence之间的实体间建立关系（边）
                 for jj in range(ii + 1, len(tmp)):
                     d[tmp[ii] - 1].add(tmp[jj] - 1) # 建双向边
                     d[tmp[jj] - 1].add(tmp[ii] - 1)
         
-        # 将d拆分，形成一一对应的数组，然后交由后面的代码处理
+        # 将d拆分，形成一一对应的数组，然后交由图进行创建边的操作
         a = [] 
         b = []
         for k, v in d.items():
@@ -551,14 +551,15 @@ class BERTDGLREDataset(IterableDataset):
                 b.append(vv)
         graph.add_edges(a, b) # 为图添加边的信息
         
-        # 定义一个path，用于reasoning mechanism。 下面这个代码的逻辑就是：找出path[(i+1,j+1)] 会经过哪些节点（集合c）。
+        # 定义一个path，用于reasoning mechanism。 下面这个代码的逻辑就是：找出(i+1,j+1)的中间节点有哪些（集合c）。
         path = dict()
         for i in range(0, graph.number_of_nodes()):
             for j in range(i + 1, graph.number_of_nodes()):
-                a = set(graph.successors(i).numpy()) # 找出节点i的相邻节点
+                a = set(graph.successors(i).numpy()) # 找出节点i的子节点。即节点i指向的节点
                 b = set(graph.successors(j).numpy()) 
                 c = [val + 1 for val in list(a & b)] # a&b 求出集合的交集
-                path[(i + 1, j + 1)] = c # 这里为什么i+1？
+                path[(i + 1, j + 1)] = c # TODO 这里为什么i+1？ # 代表的含义：(i+1,j+1):c 表示节点i和节点j都可以到达的节点集合为c。 又因为这里的图是无向图（两个单向）也就是说可以通过集合c，使得i,j互联
+                # 不清楚为什么这里要搞成 (i+1,j+1) 的形式，难道直接使用 (i,j) 不行吗？我觉得是可以的
 
         return graph, path
 
@@ -566,7 +567,7 @@ class BERTDGLREDataset(IterableDataset):
 class DGLREDataloader(DataLoader):
     # 使用num_workers 加速数据的准备过程
     # 这个 h_t_limit_per_batch 是什么意思？
-    # h_t_limit 又是啥？
+    # TODO h_t_limit 又是啥？=> 我猜测是 h_entity 和 tail_entity 的连接数。这里的1722 是因为 42*42-42 = 1722
     def __init__(self, dataset, batch_size, shuffle=False, h_t_limit_per_batch=300, h_t_limit=1722, relation_num=97,max_length=512, negativa_alpha=0.0, dataset_type='train'):
         super(DGLREDataloader, self).__init__(dataset, batch_size=batch_size) # 初始化 DataLoader 用多线程
         self.shuffle = shuffle
@@ -624,7 +625,7 @@ class DGLREDataloader(DataLoader):
             context_word_length = torch.zeros(self.batch_size,dtype=torch.long).cpu()
             ht_pairs = torch.zeros(cur_bsz, self.h_t_limit, 2,dtype=torch.long).cpu()
             ht_pair_distance = torch.zeros(self.batch_size, self.h_t_limit,dtype=torch.long).cpu()
-            relation_multi_label = torch.zeros(self.batch_size, self.h_t_limit, self.relation_num,dtype=torch.long).cpu()
+            relation_multi_label = torch.zeros(self.batch_size, self.h_t_limit, self.relation_num).cpu() # zeros 得到的结果是float
             relation_label = torch.zeros(self.batch_size, self.h_t_limit,dtype=torch.long).cpu()
             relation_mask = torch.zeros(self.batch_size, self.h_t_limit,dtype=torch.long).cpu() # 不理解这里的realtion_mask 的作用
             relation_label.fill_(IGNORE_INDEX)
@@ -637,7 +638,7 @@ class DGLREDataloader(DataLoader):
             indexes = [] # TODO ?
             graph_list = []
             entity_graph_list = []
-            entity2mention_table = [] # 这个是什么？
+            entity2mention_table = [] # 这个是什么？ => 每篇 doc 形成的一个矩阵（entity 和 mention的对应关系）叫做entity2mention。将batch下的每篇doc得到的矩阵放到同一个list中就是
             path_table = []
             overlaps = []
             # 对这个batch 中的数据进行处理
