@@ -7,7 +7,7 @@ import torch
 def get_cuda(tensor):
     if torch.cuda.is_available():
         return tensor.cuda()
-    return tensor
+    # return tensor # 宁愿报错，也拒绝返回CPU
 
 
 def logging(s):
